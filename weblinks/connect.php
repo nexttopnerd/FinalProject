@@ -39,7 +39,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Meetups</a>
+            <a class="navbar-brand" href="#">Connect</a>
         </div>
     </div>
 </div>
@@ -47,16 +47,16 @@
 <div class="container">
     <p></p>
     <form method="post">
-        <div class="form-group">
-        <textarea style="width: 500px;" name="user" id="when" value="user" placeholder="Password" class="form-control">Add an activity, find study groups, hangout...</textarea>
+        <div>
+            <br>
+            <h4> Connect to your peers. Find students taking the same course or who share the same interests as you. Click one of the buttons to get started.</h4>
+            <br>
         </div>
         <div class="form-group">
-        <textarea style="width: 300px;" id="where" name="repid"  class="form-control">Where</textarea>
+            <input class="btn btn-primary btn-lg" name="submit_course" type="submit" value="Same Courses" />
+
+            <input class="btn btn-primary btn-lg" name="submit_interest" type="submit" value="Same Interests" />
         </div>
-        <div class="form-group">
-        <textarea style="width: 300px;" id="what" name="comments" class="form-control">When</textarea>
-        </div>
-        <input class="btn btn-primary btn-lg" name="submit" type="submit" value="submit" />
     </form>
 
     <hr>

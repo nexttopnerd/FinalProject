@@ -19,7 +19,7 @@
     <style>
 
         .jumbotron {
-            height: 35em;
+            height: 50em;
             padding-top: 9em;
             margin-bottom: 2em;
             background-image: url("http://static2.businessinsider.com/image/522605d1eab8ea512da49b20/a-university-of-illinois-student-has-been-arrested-for-allegedly-making-terrorist-like-threats.jpg");
@@ -90,12 +90,12 @@
         <div class="col-md-4">
             <h2>Meetups</h2>
             <p> Get updates of all the activites, academic or entertainment, which your peers are doing and would like you to join. Find and explore new people, take part in fun activities and learn at the same time. </p>
-            <p><a class="btn btn-default" href="meetups.php" role="button">Meet Now &raquo;</a></p>
+            <p><a class="btn btn-default" href="meetups.php" role="button">Meet now &raquo;</a></p>
         </div>
         <div class="col-md-4">
             <h2>Connect</h2>
             <p>Find and connect to University of Illinois students who are taking same course as you or share same interests as you. Make new friends and get to know people who share the same interests and passion as you</p>
-            <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+            <p><a class="btn btn-default" href="connect.php" role="button">Connect now &raquo;</a></p>
         </div>
     </div>
 
