@@ -94,12 +94,12 @@
         <div class="col-md-4">
             <h2>Heading</h2>
             <?php
-            require('../parser/HTMLparser.php');
-            $parser = new Parser();
-            $parser->__parser();
+
+            //require('../parser/HTMLparser.php');
+
             ?>
             <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-            <p><a class="btn btn-default" href="test.php" role="button">View details &raquo;</a></p>
+            <p><a class="btn btn-default" href="../parser/HTMLparser.php" role="button">View details &raquo;</a></p>
         </div>
     </div>
 
