@@ -1,6 +1,6 @@
 <?php
 
-//require 'database.php';
+require '../resources/database.php';
 
 if (!empty($_POST)){
     $nameError = null;

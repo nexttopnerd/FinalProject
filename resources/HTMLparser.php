@@ -5,10 +5,8 @@
  * Date: 4/9/14
  * Time: 8:46 PM
  */
-require ("../database.php");
+require ("../resources/database.php");
 class Parser{
-
-    //public $courses = array();
 
     public function __parser(){
 
@@ -40,7 +38,7 @@ class Parser{
 
             if($count != 0){
                 //echo $subject[0];
-                $description = strip_tags($subject[0]);
+                $description = $subject[0];
                 $code = $department." ".$code;
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $sql = "INSERT IGNORE INTO Courses (Code, Department, Name, Description) values(?, ?, ?, ?)";
@@ -48,10 +46,6 @@ class Parser{
                 $q->execute(array($code, $department, $title, $description));
 
             }
-
-
-
-
 
             $count = $count+1;
 

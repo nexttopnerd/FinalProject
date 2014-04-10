@@ -74,7 +74,7 @@
     <div class="container">
         <h1>Welcome to Port Illinois</h1>
         <p>Port Illinois is a unique website for University of Illinois students to provide course evaluations, create meetups and connect to other University of Illinois students</p>
-        <p><a href="register.php" class="btn btn-primary btn-lg" role="button">Register Now!</a></p>
+        <p><a href="registerredux.php" class="btn btn-primary btn-lg" role="button">Register Now!</a></p>
     </div>
 </div>
 
@@ -82,24 +82,20 @@
     <!-- Example row of columns -->
     <div class="row">
         <div class="col-md-4">
-            <h2>Heading</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-            <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+            <h2>Courses</h2>
+            <p>Browse and review the classes offered in the Department of Computer Science. Get course information and reviews posted by your peers to get feedbacks on the course. Don't forget to add your own reviews!!! </p>
+            <p><a class="btn btn-default" href="courses.php" role="button">View courses &raquo;</a></p>
+            <p><a class="btn btn-default" href="../resources/HTMLparser.php" role="button">Update courses &raquo;</a></p>
         </div>
         <div class="col-md-4">
-            <h2>Heading</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-            <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+            <h2>Meetups</h2>
+            <p> Get updates of all the activites, academic or entertainment, which your peers are doing and would like you to join. Find and explore new people, take part in fun activities and learn at the same time. </p>
+            <p><a class="btn btn-default" href="meetups.php" role="button">Meet Now &raquo;</a></p>
         </div>
         <div class="col-md-4">
-            <h2>Heading</h2>
-            <?php
-
-            //require('../parser/HTMLparser.php');
-
-            ?>
-            <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-            <p><a class="btn btn-default" href="../parser/HTMLparser.php" role="button">View details &raquo;</a></p>
+            <h2>Connect</h2>
+            <p>Find and connect to University of Illinois students who are taking same course as you or share same interests as you. Make new friends and get to know people who share the same interests and passion as you</p>
+            <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
         </div>
     </div>
 
