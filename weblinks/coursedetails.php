@@ -106,40 +106,112 @@ session_start();
             </div>
             <hr>
             Qualitative Reviews
-            Difficulty:
-            <input type="radio" name="difficulty" value="1">1
-            <input type="radio" name="difficulty" value="2">2
-            <input type="radio" name="difficulty" value="3">3
-            <input type="radio" name="difficulty" value="4">4
-            <input type="radio" name="difficulty" value="5">5
-            Time Commitment:
-            <input type="radio" name="time" value="1">1
-            <input type="radio" name="time" value="2">2
-            <input type="radio" name="time" value="3">3
-            <input type="radio" name="time" value="4">4
-            <input type="radio" name="time" value="5">5
-            Enjoyment:
-            <input type="radio" name="enjoyment" value="1">1
-            <input type="radio" name="enjoyment" value="2">2
-            <input type="radio" name="enjoyment" value="3">3
-            <input type="radio" name="enjoyment" value="4">4
-            <input type="radio" name="enjoyment" value="5">5
+            <div class="row">
+                <div class="col-xs-4">
+                    Difficulty:
+                </div>
+                <div class="col-xs-4">
+                    <input type="radio" name="difficulty" value="1">1
+                    <input type="radio" name="difficulty" value="2">2
+                    <input type="radio" name="difficulty" value="3">3
+                    <input type="radio" name="difficulty" value="4">4
+                    <input type="radio" name="difficulty" value="5">5
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    Time Commitment:
+                </div>
+                <div class="col-xs-4">
+                    <input type="radio" name="time" value="1">1
+                    <input type="radio" name="time" value="2">2
+                    <input type="radio" name="time" value="3">3
+                    <input type="radio" name="time" value="4">4
+                    <input type="radio" name="time" value="5">5
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    Enjoyment:
+                </div>
+                <div class="col-xs-4">
+                    <input type="radio" name="enjoyment" value="1">1
+                    <input type="radio" name="enjoyment" value="2">2
+                    <input type="radio" name="enjoyment" value="3">3
+                    <input type="radio" name="enjoyment" value="4">4
+                    <input type="radio" name="enjoyment" value="5">5
+                </div>
+            </div>
             <hr>
             Exams
-            # of exams: <input type="number">
-            Exam type: <input type="text">
-            Final Exam? <input type="radio" name="final"> Yes
-            <input type="radio" name="final"> No<hr>
+            <div class="row">
+                <div class="col-xs-4">
+                    # of exams:
+                </div>
+                <div class="col-xs-4">
+                    <input type="number">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    Exam type:
+                </div>
+                <div class="col-xs-4">
+                    <input type="text">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    Final Exam?
+                </div>
+                <div class="col-xs-4">
+                    <input type="radio" name="final"> Yes
+                    <input type="radio" name="final"> No<hr>
+                </div>
+            </div>
             Assignments
-            # of MPs: <input type="number">
-            # of Papers: <input type="number">
-            <textarea>Comments Regarding Professor:</textarea>
-            <textarea>Course Content:</textarea>
-            <textarea>Additional Comments/Tips</textarea>
-            Part of:
-            <input type="radio" name="type">College Core
-            <input type="radio" name="type">Major Requirement
-            <input type="radio" name="type">Elective
+            <div class="row">
+                <div class="col-xs-4">
+                    # of MPs:
+                </div>
+                <div class="col-xs-4">
+                     <input type="number">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    # of Papers:
+                </div>
+                <div class="col-xs-4">
+                    <input type="number">
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-xs-8">
+                    <textarea style="width: 547px; height: 80px;">Comments Regarding Professor:</textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-8">
+                    <textarea style="width: 547px; height: 80px;">Course Content:</textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-8">
+                    <textarea style="width: 547px; height: 80px;">Additional Comments/Tips</textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    Part of:
+                </div>
+                <div class="col-xs-4">
+                    <input type="radio" name="type">College Core
+                    <input type="radio" name="type">Major Requirement
+                    <input type="radio" name="type">Elective
+                </div>
+            </div>
 
 
 

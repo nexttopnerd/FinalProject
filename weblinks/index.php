@@ -22,7 +22,7 @@ if (!empty($_POST)){
 
     $valid = true;
     if (empty($name)){
-        $nameError = 'Please enter a valid username';
+        $nameError = 'Please enter a valid email';
         $valid = false;
     }
 
@@ -37,17 +37,27 @@ if (!empty($_POST)){
         $encrypted_password = md5($password . $salt);
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+        $sql = "SELECT * FROM users WHERE email = ? AND password = ?";
         $q = $pdo->prepare($sql);
         $q->execute(array($name, $encrypted_password));
         $data = $q->fetch(PDO::FETCH_ASSOC);
         Database::disconnect();
         //ini_set('session.save_path', '/home/projectnull/public_html/financialactivity/sessions');
 
+        if($data == null){
+            $passwordError = 'Either password or email is wrong';
+        }
+        else{
         session_start();
-        $_SESSION["userid"] = $data['userid'];
+        $_SESSION["username"] = $data['username'];
         $_SESSION["name"] = $name;
-        header("Location: activityredux.php");
+
+        echo '<script type="text/javascript">
+                        alert("You are signed in!!!");
+                        </script>';
+
+        //setName($name);
+        }
     }
 }
 
@@ -95,6 +105,7 @@ if (!empty($_POST)){
 
 
     <![endif]-->
+
 </head>
 
 <body>
@@ -110,13 +121,23 @@ if (!empty($_POST)){
             </button>
             <a class="navbar-brand" href="#">Home</a>
         </div>
-        <div class="navbar-collapse collapse">
-            <form class="navbar-form navbar-right" action="login.php" method="post">
-                <div class="form-group">
-                    <input type="text" placeholder="Email" class="form-control">
+        <div class="navbar-collapse collapse" id="test">
+            <form class="navbar-form navbar-right" action="" method="post">
+                <div class="form-group <?php echo !empty($nameError)?'error':'';?>">
+                    <div class="controls">
+                        <input name="name" type="text"  placeholder="Email" class="form-control" value="<?php echo !empty($name)?$name:'';?>">
+                        <?php if (!empty($nameError)): ?>
+                            <span class="help-inline"><?php echo $nameError;?></span>
+                        <?php endif; ?>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <input type="password" placeholder="Password" class="form-control">
+                <div class="form-group <?php echo !empty($passwordError)?'error':'';?>">
+                    <div class="controls">
+                        <input name="password" type="password"  placeholder="Password" class="form-control" value="<?php echo !empty($password)?$password:'';?>">
+                        <?php if (!empty($passwordError)): ?>
+                            <span class="help-inline"><?php echo $passwordError;?></span>
+                        <?php endif; ?>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-success">Sign in</button>
             </form>
@@ -127,7 +148,7 @@ if (!empty($_POST)){
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
     <div class="container">
-        <h1>Welcome to Port Illinois</h1>
+        <h1>Welcome to Port Illinois<?php function setName($nm){ echo $nm;}?></h1>
         <p>Port Illinois is a unique website for University of Illinois students to provide course evaluations, create meetups and connect to other University of Illinois students</p>
         <p><a href="register.php" class="btn btn-primary btn-lg" role="button">Register Now!</a></p>
     </div>
