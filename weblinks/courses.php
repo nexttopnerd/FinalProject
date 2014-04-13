@@ -17,6 +17,7 @@ session_start();
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
 
+
     <!-- Custom styles for this template -->
     <link href="../css/jumbotron.css" rel="stylesheet">
 
@@ -43,8 +44,19 @@ session_start();
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Courses</a>
+            <a class="navbar-brand" href="index.php">Home</a>
         </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="#">About us</a></li>
+                <li class="active"><a href="courses.php">Courses</a></li>
+                <li><a href="meetups.php">Meetups</a></li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"> Hello <?php echo $_SESSION["username"];?>!</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
     </div>
 </div>
 
@@ -62,10 +74,12 @@ session_start();
     $sql = "SELECT * FROM Courses";
 
     foreach($pdo->query($sql) as $row){
+        echo '<br><dl class="dl-horizontal">';
 
-        echo '<a href="coursedetails.php?title='.$row['Code'].'">'.$row['Code'].'</a><br>';
+        echo '<dt><h3><a href="coursedetails.php?title='.$row['Code'].'">'.$row['Code'].'</a></h3></dt>';
 
         $courses[(string) $row['Code']] = new Course($row['Name'], $row['Code'], $row['Department'], $row['Description']);
+        echo '</dl>';
     }
 
     // store session data
@@ -77,11 +91,8 @@ session_start();
 
     ?>
 
-    <hr>
 
-    <footer>
-        <p>&copy; Company 2014</p>
-    </footer>
+
 </div> <!-- /container -->
 
 

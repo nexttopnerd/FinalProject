@@ -15,7 +15,7 @@ class Database
     public static function connect()
     {
         // One connection through whole application
-        if ( null == self::$cont )
+        if ( self::$cont == null )
         {
             try
             {

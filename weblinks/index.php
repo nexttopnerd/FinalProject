@@ -51,10 +51,7 @@ if (!empty($_POST)){
         session_start();
         $_SESSION["username"] = $data['username'];
         $_SESSION["name"] = $name;
-
-        echo '<script type="text/javascript">
-                        alert("You are signed in!!!");
-                        </script>';
+        header("Location: courses.php");
 
         //setName($name);
         }
@@ -122,6 +119,11 @@ if (!empty($_POST)){
             <a class="navbar-brand" href="#">Home</a>
         </div>
         <div class="navbar-collapse collapse" id="test">
+            <?php if (isset($_SESSION["username"])){
+                echo '<div class="navbar-form navbar-right">';
+                echo "<h4>"."Welcome ". $_SESSION["username"]."!</h4>";
+                echo '</div>';
+            } else{?>
             <form class="navbar-form navbar-right" action="" method="post">
                 <div class="form-group <?php echo !empty($nameError)?'error':'';?>">
                     <div class="controls">
@@ -141,6 +143,7 @@ if (!empty($_POST)){
                 </div>
                 <button type="submit" class="btn btn-success">Sign in</button>
             </form>
+            <? } ?>
         </div><!--/.navbar-collapse -->
     </div>
 </div>

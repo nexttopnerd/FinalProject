@@ -1,3 +1,7 @@
+<?php
+@ob_start();
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,8 +43,19 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Meetups</a>
+            <a class="navbar-brand" href="index.php">Home</a>
         </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="#">About us</a></li>
+                <li class="active"><a href="courses.php">Courses</a></li>
+                <li><a href="meetups.php">Meetups</a></li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"> Hello <?php echo $_SESSION["username"];?>!</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
     </div>
 </div>
 

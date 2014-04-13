@@ -43,17 +43,27 @@ session_start();
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><?php echo $_GET['title']; ?></a>
+                <a class="navbar-brand" href="index.php">Home</a>
             </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#">About us</a></li>
+                    <li class="active"><a href="courses.php">Courses</a></li>
+                    <li><a href="meetups.php">Meetups</a></li>
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"> Hello <?php echo $_SESSION["username"];?>!</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
         </div>
     </div>
 
-    <div class="container-fluid">
+    <div class="container">
         <?php
 
         include("../datastructures/course.php");
-
-        echo "<br>"."<br>";
+        echo "<h3 class='text-center'>".$_GET['title']."</h3>";
         $courses = $_SESSION['view'];
         $courses = unserialize($courses);
         echo "<font size='4' face='Arial'>";
@@ -63,39 +73,40 @@ session_start();
         ?>
 
         <hr>
-        <form>
+        <form class="form-horizontal" role="form">
             <h3>Add a Review</h3>
             <hr>
-            <div class="row">
-                <div class="col-xs-4">
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">
                     Professor name:
-                </div>
-                <div class="col-xs-4">
-                    <input type="text">
+                </label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control">
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-4">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
                     TA:
-                </div>
-                <div class="col-xs-4">
-                    <input type="text">
+                </label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control">
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-4">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
                     Semester
-                </div>
-                <div class="col-xs-4">
-                    <input type="text">
+                </label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control">
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-4">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
                     Expected Grade/Grade:
-                </div>
-                <div class="col-xs-4">
-                    <select class="col-xs-5">
+                </label>
+                <div class="col-sm-10">
+                    <select class="form-control">
                         <option value="0">Select option...</option>
                         <option value="A">A+/A</option>
                         <option value="B">B+/B/B-</option>
@@ -104,117 +115,168 @@ session_start();
                     </select>
                 </div>
             </div>
-            <hr>
-            Qualitative Reviews
-            <div class="row">
-                <div class="col-xs-4">
-                    Difficulty:
-                </div>
-                <div class="col-xs-4">
-                    <input type="radio" name="difficulty" value="1">1
-                    <input type="radio" name="difficulty" value="2">2
-                    <input type="radio" name="difficulty" value="3">3
-                    <input type="radio" name="difficulty" value="4">4
-                    <input type="radio" name="difficulty" value="5">5
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-4">
-                    Time Commitment:
-                </div>
-                <div class="col-xs-4">
-                    <input type="radio" name="time" value="1">1
-                    <input type="radio" name="time" value="2">2
-                    <input type="radio" name="time" value="3">3
-                    <input type="radio" name="time" value="4">4
-                    <input type="radio" name="time" value="5">5
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-4">
-                    Enjoyment:
-                </div>
-                <div class="col-xs-4">
-                    <input type="radio" name="enjoyment" value="1">1
-                    <input type="radio" name="enjoyment" value="2">2
-                    <input type="radio" name="enjoyment" value="3">3
-                    <input type="radio" name="enjoyment" value="4">4
-                    <input type="radio" name="enjoyment" value="5">5
-                </div>
-            </div>
-            <hr>
-            Exams
-            <div class="row">
-                <div class="col-xs-4">
-                    # of exams:
-                </div>
-                <div class="col-xs-4">
-                    <input type="number">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-4">
-                    Exam type:
-                </div>
-                <div class="col-xs-4">
-                    <input type="text">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-4">
-                    Final Exam?
-                </div>
-                <div class="col-xs-4">
-                    <input type="radio" name="final"> Yes
-                    <input type="radio" name="final"> No<hr>
-                </div>
-            </div>
-            Assignments
-            <div class="row">
-                <div class="col-xs-4">
-                    # of MPs:
-                </div>
-                <div class="col-xs-4">
-                     <input type="number">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-4">
-                    # of Papers:
-                </div>
-                <div class="col-xs-4">
-                    <input type="number">
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-xs-8">
-                    <textarea style="width: 547px; height: 80px;">Comments Regarding Professor:</textarea>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-8">
-                    <textarea style="width: 547px; height: 80px;">Course Content:</textarea>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-8">
-                    <textarea style="width: 547px; height: 80px;">Additional Comments/Tips</textarea>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-4">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
                     Part of:
+                </label>
+                <div class="col-sm-10">
+                    <label class="radio-inline">
+                        <input type="radio" name="type">College Core
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="type">Major Requirement
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="type">Elective</br>
+                    </label>
                 </div>
-                <div class="col-xs-4">
-                    <input type="radio" name="type">College Core
-                    <input type="radio" name="type">Major Requirement
-                    <input type="radio" name="type">Elective
+            </div>
+            <hr>
+            <h3>
+                <i>Qualitative Reviews</i>
+            </h3>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
+                    Difficulty:
+                </label>
+                <div class="col-sm-10">
+                    <label class="radio-inline">
+                        <input type="radio" name="difficulty" value="option1"> 1
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="difficulty"value="option2"> 2
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="difficulty"value="option3"> 3
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="difficulty"value="option3"> 4
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="difficulty"value="option3"> 5
+                    </label>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2">
+                    Time Commitment:
+                </label>
+                <div class="col-sm-10">
+                    <label class="radio-inline">
+                        <input type="radio" name="time" value="option1"> 1
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="time"value="option2"> 2
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="time"value="option3"> 3
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="time"value="option3"> 4
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="time"value="option3"> 5
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
+                    Enjoyment:
+                </label>
+                <div class="col-sm-10">
+                    <label class="radio-inline">
+                        <input type="radio" name="enjoyment" value="option1"> 1
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="enjoyment"value="option2"> 2
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="enjoyment"value="option3"> 3
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="enjoyment"value="option3"> 4
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="enjoyment"value="option3"> 5
+                    </label>
+                </div>
+
+            </div>
+            <hr>
+            <h3>
+            <i>Exams</i>
+            </h3>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
+                    # of exams:
+                </label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
+                    Exam type:
+                </label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
+                    Final Exam?
+                </label>
+                <div class="col-sm-10">
+                    <label class="radio-inline">
+                        <input type="radio" name="final"> Yes
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="final"> No
+                    </label>
+                </div>
+            </div>
+            <hr>
+            <h3>
+            <i>Assignments
+             </i>   </h3>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
+                    # of MPs:
+                </label>
+                <div class="col-sm-10">
+                     <input type="number" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
+                    # of Papers:
+                </label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control">
+                </div>
+            </div>
+            <hr>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <textarea class="col-sm-12 form-control" style="height: 100px">Comments Regarding Professor</textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <textarea class="col-sm-12 form-control" style="height:100px">Course Content:</textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <textarea class="col-sm-12 form-control" style="height:100px">Additional Comments/Tips</textarea>
                 </div>
             </div>
 
 
 
+        <input type="submit" class="btn btn-primary center-block">
         </form>
         <hr>
 
