@@ -6,7 +6,11 @@ session_start();
 
 require '../resources/database.php';
 
-if (!empty($_POST)){
+//$data=null;
+if (isset($_POST['logout'])){
+    $_SESSION["username"]="";
+}
+else if (!empty($_POST)){
 
     if(isset($_SESSION)):
         session_destroy();
@@ -119,9 +123,13 @@ if (!empty($_POST)){
             <a class="navbar-brand" href="#">Home</a>
         </div>
         <div class="navbar-collapse collapse" id="test">
-            <?php if (isset($_SESSION["username"])){
+            <?php if (isset($_SESSION["username"]) && $_SESSION["username"]!=""){
                 echo '<div class="navbar-form navbar-right">';
                 echo "<h4>"."Welcome ". $_SESSION["username"]."!</h4>";
+                ?>
+                <form action="index.php" method="post">
+                    <input type="submit" name="logout" value="Log out!" class="btn btn-default">
+                </form> <?
                 echo '</div>';
             } else{?>
             <form class="navbar-form navbar-right" action="" method="post">
