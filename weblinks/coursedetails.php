@@ -48,7 +48,7 @@ session_start();
         </div>
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
         <?php
 
         include("../datastructures/course.php");
@@ -62,6 +62,88 @@ session_start();
         echo $courses[$_GET['title']]->getDescription();
         ?>
 
+        <hr>
+        <form>
+            <h3>Add a Review</h3>
+            <hr>
+            <div class="row">
+                <div class="col-xs-4">
+                    Professor name:
+                </div>
+                <div class="col-xs-4">
+                    <input type="text">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    TA:
+                </div>
+                <div class="col-xs-4">
+                    <input type="text">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    Semester
+                </div>
+                <div class="col-xs-4">
+                    <input type="text">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    Expected Grade/Grade:
+                </div>
+                <div class="col-xs-4">
+                    <select class="col-xs-5">
+                        <option value="0">Select option...</option>
+                        <option value="A">A+/A</option>
+                        <option value="B">B+/B/B-</option>
+                        <option value="C">C+/C/C-</option>
+                        <option value="D">D or below</option>
+                    </select>
+                </div>
+            </div>
+            <hr>
+            Qualitative Reviews
+            Difficulty:
+            <input type="radio" name="difficulty" value="1">1
+            <input type="radio" name="difficulty" value="2">2
+            <input type="radio" name="difficulty" value="3">3
+            <input type="radio" name="difficulty" value="4">4
+            <input type="radio" name="difficulty" value="5">5
+            Time Commitment:
+            <input type="radio" name="time" value="1">1
+            <input type="radio" name="time" value="2">2
+            <input type="radio" name="time" value="3">3
+            <input type="radio" name="time" value="4">4
+            <input type="radio" name="time" value="5">5
+            Enjoyment:
+            <input type="radio" name="enjoyment" value="1">1
+            <input type="radio" name="enjoyment" value="2">2
+            <input type="radio" name="enjoyment" value="3">3
+            <input type="radio" name="enjoyment" value="4">4
+            <input type="radio" name="enjoyment" value="5">5
+            <hr>
+            Exams
+            # of exams: <input type="number">
+            Exam type: <input type="text">
+            Final Exam? <input type="radio" name="final"> Yes
+            <input type="radio" name="final"> No<hr>
+            Assignments
+            # of MPs: <input type="number">
+            # of Papers: <input type="number">
+            <textarea>Comments Regarding Professor:</textarea>
+            <textarea>Course Content:</textarea>
+            <textarea>Additional Comments/Tips</textarea>
+            Part of:
+            <input type="radio" name="type">College Core
+            <input type="radio" name="type">Major Requirement
+            <input type="radio" name="type">Elective
+
+
+
+        </form>
         <hr>
 
         <footer>
