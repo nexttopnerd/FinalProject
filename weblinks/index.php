@@ -1,3 +1,58 @@
+<?php
+@ob_start();
+session_start();
+?>
+<?php
+
+require '../resources/database.php';
+
+if (!empty($_POST)){
+
+    if(isset($_SESSION)):
+        session_destroy();
+    endif;
+
+    $nameError = null;
+    $passwordError = null;
+
+
+    $name = $_POST["name"];
+    $password = $_POST["password"];
+
+
+    $valid = true;
+    if (empty($name)){
+        $nameError = 'Please enter a valid username';
+        $valid = false;
+    }
+
+    if (empty($password)){
+        $passwordError = 'Please enter a password';
+        $valid = false;
+    }
+
+
+    if ($valid){
+        $salt = "8dC_9Kl?";
+        $encrypted_password = md5($password . $salt);
+        $pdo = Database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+        $q = $pdo->prepare($sql);
+        $q->execute(array($name, $encrypted_password));
+        $data = $q->fetch(PDO::FETCH_ASSOC);
+        Database::disconnect();
+        //ini_set('session.save_path', '/home/projectnull/public_html/financialactivity/sessions');
+
+        session_start();
+        $_SESSION["userid"] = $data['userid'];
+        $_SESSION["name"] = $name;
+        header("Location: activityredux.php");
+    }
+}
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,7 +111,7 @@
             <a class="navbar-brand" href="#">Home</a>
         </div>
         <div class="navbar-collapse collapse">
-            <form class="navbar-form navbar-right" role="form">
+            <form class="navbar-form navbar-right" action="login.php" method="post">
                 <div class="form-group">
                     <input type="text" placeholder="Email" class="form-control">
                 </div>
@@ -74,7 +129,7 @@
     <div class="container">
         <h1>Welcome to Port Illinois</h1>
         <p>Port Illinois is a unique website for University of Illinois students to provide course evaluations, create meetups and connect to other University of Illinois students</p>
-        <p><a href="registerredux.php" class="btn btn-primary btn-lg" role="button">Register Now!</a></p>
+        <p><a href="register.php" class="btn btn-primary btn-lg" role="button">Register Now!</a></p>
     </div>
 </div>
 
