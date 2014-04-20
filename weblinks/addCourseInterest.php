@@ -61,10 +61,8 @@ session_start();
         /**
          * ajax function to insert course into the database asynchronously
          *
-         * @param sid, student ID
-         * @param course, course ID
          */
-        function insertCourse(course)
+        function insertCourse()
         {
             var course_id = document.getElementById("course").value;
             if (window.XMLHttpRequest)
@@ -76,7 +74,7 @@ session_start();
                 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
             }
             course_id = "CS "+course_id;
-            alert(course_id);
+
             xmlhttp.open("POST","addCourse.php?course="+course_id,false);
             xmlhttp.send();
 
@@ -129,7 +127,7 @@ session_start();
             <div>
                 <?php
                 require ("../resources/database.php");
-
+                //list of courses the user is enrolled in
                 $courses = array();
                 $pdo = Database::connect();
 
@@ -145,13 +143,12 @@ session_start();
                 Database::disconnect();
                 ?>
             </div>
-            <form method="post" action="" onsubmit="insertCourse('<?php echo $_POST['course']; ?>'); return false;">
+            <form method="post" action="" onsubmit="insertCourse(); return false;">
                 <div class="form-group">
                     <br>
                     <select name="course" id="course" value="course">
                         <?php
-
-
+                        //list of all the courses offered in the department
                         $courses = array();
                         $pdo = Database::connect();
 

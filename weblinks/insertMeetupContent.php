@@ -2,8 +2,8 @@
 @ob_start();
 session_start();
 /**
- * Created by PhpStorm.
- * User: soniamohanlal
+ * Insert meetup details like content, time and location into the database
+ * User: anirud
  * Date: 4/17/14
  * Time: 2:44 PM
  */

@@ -56,13 +56,10 @@ session_start();
 
 
         /**
-         * ajax function to insert comments into the database asynchronously
+         * ajax function to insert meetup details into the database
          *
-         * @param content, name of the assignment
-         * @param mwhen, name of file in the assignment
-         * @param mwhere, name of the user who posted the comment
          */
-        function insertContent(content, mwhen, mwhere)
+        function insertContent()
         {
 
             // jQuery AJAX Get Error Handler
@@ -81,10 +78,11 @@ session_start();
              }
 
             //opening the xml http request
-            alert("insertMeetupContent.php?content="+cnt+"&mwhen="+mwh+"&mwhere="+mwhr);
+
             xmlhttp.open("POST","insertMeetupContent.php?content="+cnt+"&mwhen="+mwh+"&mwhere="+mwhr,false);
             xmlhttp.send();
 
+            window.location.reload();
 
             //loading the new set of comments after a new comment has been posted
             //loadComments(assign, file);
@@ -135,7 +133,7 @@ session_start();
 
 <div class="container">
     <?php
-
+    //displays all the meetups
     require '../resources/database.php';
 
     $pdo = Database::connect();
@@ -152,8 +150,7 @@ session_start();
     ?>
     <hr>
     <p></p>
-    <form method="post" action="" onsubmit="insertContent('<?php echo $_POST['activity']; ?>', '<?php echo $_POST['mwhen']; ?>',
-        '<?php echo $_POST['mwhere']; ?>'); return false;">
+    <form method="post" action="" onsubmit="insertContent(); return false;">
         <div class="form-group">
         <textarea style="width: 500px;" name="activity" id="activity" value="activity" placeholder="Password" class="form-control">Add an activity, find study groups, hangout...</textarea>
         </div>

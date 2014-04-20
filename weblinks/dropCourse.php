@@ -66,12 +66,10 @@ require ("../resources/database.php");
 
 
         /**
-         * ajax function to insert course into the database asynchronously
+         * ajax function to remove course from the database
          *
-         * @param sid, student ID
-         * @param course, course ID
          */
-        function dropCourse(course)
+        function dropCourse()
         {
             var course_id = document.getElementById("course").value;
             if (window.XMLHttpRequest)
@@ -83,7 +81,7 @@ require ("../resources/database.php");
                 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
             }
             course_id = "CS "+course_id;
-            alert(course_id);
+
             xmlhttp.open("POST","removeCourse.php?course="+course_id,false);
             xmlhttp.send();
 
@@ -133,11 +131,12 @@ require ("../resources/database.php");
 <div class="container">
     <br>
     <h4>Drop a course:<h4>
-            <form method="post" action="" onsubmit="dropCourse('<?php echo $_POST['course']; ?>'); return false;">
+            <form method="post" action="" onsubmit="dropCourse(); return false;">
                 <div class="form-group">
                     <br>
                     <select name="course" id="course" value="course">
                         <?php
+                        //list of courses the user is enrolled in
                         $courses = array();
                         $pdo = Database::connect();
 

@@ -76,7 +76,7 @@ session_start();
                 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
             }
             course_id = "CS "+course_id;
-            alert(course_id);
+
             xmlhttp.open("POST","addCourse.php?course="+course_id,false);
             xmlhttp.send();
 
@@ -125,7 +125,7 @@ session_start();
 
 <div class="container">
     <?php
-
+    //provides the detailed information regarding the meet ups
     require '../resources/database.php';
     $cntid = $_GET["cntid"];
 
@@ -149,6 +149,7 @@ session_start();
     <hr>
     <div>
         <?php
+        //tells how many people have joined the current meetup
         $joined = 0;
         $cntid = $_GET["cntid"];
         $pdo = Database::connect();
@@ -165,10 +166,8 @@ session_start();
     <hr>
     <div>
         <?php
-        function mjoin(){
-            echo "here";
-        }
-
+        //Checks if the user has joined the meetup or not. If the user hasn't he can join by
+        //clicking on join button else he can leave by clicking on leave button
         $joined = 0;
         $cntid = $_GET["cntid"];
         $pdo = Database::connect();

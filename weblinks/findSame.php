@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Finds all the students who are taking the same courses as the user
  * User: soniamohanlal
  * Date: 4/19/14
  * Time: 2:11 PM

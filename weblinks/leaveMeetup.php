@@ -1,6 +1,7 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Leave the meetup. The php file deletes the row from the table containing the
+ * details of the user and the meetup he/she wants to leave
  * User: soniamohanlal
  * Date: 4/19/14
  * Time: 4:47 PM

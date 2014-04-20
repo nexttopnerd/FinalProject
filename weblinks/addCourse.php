@@ -2,7 +2,7 @@
 @ob_start();
 session_start();
 /**
- * Created by PhpStorm.
+ * Enables the user to register/add courses and stores it in the database.
  * User: soniamohanlal
  * Date: 4/17/14
  * Time: 2:44 PM
