@@ -1,7 +1,27 @@
 <?php
-@ob_start();
 session_start();
+if ( !empty($_GET['id'])) {
+    $id = $_REQUEST['id'];
+}
+if ( !empty($_POST)) {
+    // keep track post values
+    $id = $_POST['id'];
+
+    // delete data
+    include_once("../resources/database.php");
+    $pdo = Database::connect();
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $sql = "DELETE FROM reviews WHERE id = ?";
+    $q = $pdo->prepare($sql);
+    $q->execute(array($id));
+    Database::disconnect();
+    $location = "Location: coursedetails.php?title=".$_SESSION["class"];
+    header($location);
+
+}
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +36,6 @@ session_start();
 
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
-
 
     <!-- Custom styles for this template -->
     <link href="../css/jumbotron.css" rel="stylesheet">
@@ -50,8 +69,7 @@ session_start();
             <ul class="nav navbar-nav">
                 <li><a href="#">About us</a></li>
                 <li class="active"><a href="courses.php">Courses</a></li>
-                <li><a href="meetups.php">Meetups</a>
-                <li><a href="connect.php">Connect</a></li>
+                <li><a href="meetups.php">Meetups</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -62,45 +80,12 @@ session_start();
 </div>
 
 <div class="container">
-    <?php
-
-    require ("../resources/database.php");
-    include("../datastructures/course.php");
-
-    $courses = array();
-
-    $pdo = Database::connect();
-
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "SELECT * FROM Courses";
-
-    foreach($pdo->query($sql) as $row){
-        echo '<br><dl class="dl-horizontal">';
-
-        echo '<dt><h3><a href="coursedetails.php?title='.$row['Code'].'">'.$row['Code'].'</a></h3></dt>';
-
-        $courses[(string) $row['Code']] = new Course($row['Name'], $row['Code'], $row['Credit'], $row['Department'], $row['Description']);
-        echo '</dl>';
-    }
-
-    // store session data
-    $_SESSION['view'] = serialize($courses);
-
-    ob_flush();
-
-    Database::disconnect();
-
-    ?>
-
-
-
-</div> <!-- /container -->
-
-
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-</body>
-</html>
+    <form class="form-horizontal" action="deletereview.php" method="post">
+        <input type="hidden" name="id" value="<?php echo $id;?>"/>
+        <p class="alert alert-error"><h3>Are you sure you want to delete this review?</h3></p>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-large btn-danger">Yes</button>
+            <a class="btn btn-large btn-primary" href="coursedetails.php?title=<?echo $_SESSION['class']?>">No</a>
+        </div>
+    </form>
+</div>

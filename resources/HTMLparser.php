@@ -34,20 +34,24 @@ class Parser{
 
             $html_two = file_get_html('https://courses.illinois.edu/cisapp/dispatcher/schedule/2014/fall/CS/'.$code);
 
-            $subject = $html_two->find('div[id=subject-info1]');
+            $subject = $html_two->find('p.portlet-padtop10');
 
             if($count != 0){
                 //echo $subject[0];
-                $description = $subject[0];
+                $credit = $subject[0]->innertext;
+                $credit = str_replace('<strong>Credit:</strong> ', '', $credit);
+                $description = $subject[1]->innertext;
                 $code = $department." ".$code;
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "INSERT IGNORE INTO Courses (Code, Department, Name, Description) values(?, ?, ?, ?)";
+                $sql = "INSERT IGNORE INTO Courses (Code, Department, Name, Credit, Description) values(?, ?, ?, ?, ?)";
                 $q = $pdo->prepare($sql);
-                $q->execute(array($code, $department, $title, $description));
+                $q->execute(array($code, $department, $title, $credit, $description));
+
 
             }
 
             $count = $count+1;
+
 
             $html_two->clear();
         }

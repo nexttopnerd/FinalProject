@@ -7,21 +7,39 @@
  */
 
 class Review{
-
     private $professor;
     private $ta;
-    private $expected_grade;
+    private $grade;
     private $difficulty;
-    private $time_commitment;
+    private $time;
     private $enjoyment;
-    private $number_of_exams;
-    private $exam_type;
-    private $no_of_projects;
-    private $no_of_papers;
+    private $exams;
+    private $examtype;
+    private $mps;
+    private $papers;
     private $comments_on_professor;
     private $tips;
-    private $year;
+    private $semester;
+    private $timestamp;
     private $part_of_core;
+    private $comments_on_course;
+    private $user;
+    private $id;
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Argument constructor for review
@@ -39,26 +57,50 @@ class Review{
      * @param $k, number of papers to be written for the course
      * @param $l, comment about the professor
      * @param $m, tips to excel in the course
-     * @param $n, year in which the course was offered
+     * @param $n, semester
      * @param $o, was the course a core requirement or an elective
+     * @param $, was the review of the class
      */
-    function __construct($a,$b,$c,$d,$e,$f,$g,$h,$j,$k,$l,$m,$n,$o){
+    function __construct($a,$b,$c,$d,$e,$f,$g,$h,$j,$k,$l,$m,$n,$o,$p,$q,$r,$s){
 
         $this->professor = $a;
         $this->ta = $b;
-        $this->expected_grade = $c;
+        $this->grade = $c;
         $this->difficulty = $d;
-        $this->time_commitment = $e;
+        $this->time = $e;
         $this->enjoyment = $f;
-        $this->number_of_exams = $g;
-        $this->exam_type = $h;
-        $this->no_of_projects = $j;
-        $this->no_of_papers = $k;
+        $this->exams = $g;
+        $this->examtype = $h;
+        $this->mps = $j;
+        $this->papers = $k;
         $this->comments_on_professor = $l;
         $this->tips = $m;
-        $this->year = $n;
+        $this->semester = $n;
         $this->part_of_core = $o;
+        $this->timestamp = $p;
+        $this->comments_on_course = $q;
+        $this->user = $r;
+        $this->id = $s;
+
+
     }
+
+    /**
+     * @param mixed $comments_on_course
+     */
+    public function setCommentsOnCourse($comments_on_course)
+    {
+        $this->comments_on_course = $comments_on_course;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCommentsOnCourse()
+    {
+        return $this->comments_on_course;
+    }
+
     /**
      * @param mixed $comments_on_professor
      */
@@ -73,22 +115,6 @@ class Review{
     public function getCommentsOnProfessor()
     {
         return $this->comments_on_professor;
-    }
-
-    /**
-     * @param mixed $year
-     */
-    public function setYear($year)
-    {
-        $this->year = $year;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getYear()
-    {
-        return $this->year;
     }
 
     /**
@@ -124,83 +150,83 @@ class Review{
     }
 
     /**
-     * @param mixed $exam_type
+     * @param mixed $exams
      */
-    public function setExamType($exam_type)
+    public function setExams($exams)
     {
-        $this->exam_type = $exam_type;
+        $this->exams = $exams;
     }
 
     /**
      * @return mixed
      */
-    public function getExamType()
+    public function getExams()
     {
-        return $this->exam_type;
+        return $this->exams;
     }
 
     /**
-     * @param mixed $expected_grade
+     * @param mixed $examtype
      */
-    public function setExpectedGrade($expected_grade)
+    public function setExamtype($examtype)
     {
-        $this->expected_grade = $expected_grade;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getExpectedGrade()
-    {
-        return $this->expected_grade;
-    }
-
-    /**
-     * @param mixed $no_of_papers
-     */
-    public function setNoOfPapers($no_of_papers)
-    {
-        $this->no_of_papers = $no_of_papers;
+        $this->examtype = $examtype;
     }
 
     /**
      * @return mixed
      */
-    public function getNoOfPapers()
+    public function getExamtype()
     {
-        return $this->no_of_papers;
+        return $this->examtype;
     }
 
     /**
-     * @param mixed $no_of_projects
+     * @param mixed $grade
      */
-    public function setNoOfProjects($no_of_projects)
+    public function setGrade($grade)
     {
-        $this->no_of_projects = $no_of_projects;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNoOfProjects()
-    {
-        return $this->no_of_projects;
-    }
-
-    /**
-     * @param mixed $number_of_exams
-     */
-    public function setNumberOfExams($number_of_exams)
-    {
-        $this->number_of_exams = $number_of_exams;
+        $this->grade = $grade;
     }
 
     /**
      * @return mixed
      */
-    public function getNumberOfExams()
+    public function getGrade()
     {
-        return $this->number_of_exams;
+        return $this->grade;
+    }
+
+    /**
+     * @param mixed $mps
+     */
+    public function setMps($mps)
+    {
+        $this->mps = $mps;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMps()
+    {
+        return $this->mps;
+    }
+
+    /**
+     * @param mixed $papers
+     */
+    public function setPapers($papers)
+    {
+        $this->papers = $papers;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPapers()
+    {
+        return $this->papers;
     }
 
     /**
@@ -236,6 +262,22 @@ class Review{
     }
 
     /**
+     * @param mixed $semester
+     */
+    public function setSemester($semester)
+    {
+        $this->semester = $semester;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSemester()
+    {
+        return $this->semester;
+    }
+
+    /**
      * @param mixed $ta
      */
     public function setTa($ta)
@@ -252,19 +294,35 @@ class Review{
     }
 
     /**
-     * @param mixed $time_commitment
+     * @param mixed $time
      */
-    public function setTimeCommitment($time_commitment)
+    public function setTime($time)
     {
-        $this->time_commitment = $time_commitment;
+        $this->time = $time;
     }
 
     /**
      * @return mixed
      */
-    public function getTimeCommitment()
+    public function getTime()
     {
-        return $this->time_commitment;
+        return $this->time;
+    }
+
+    /**
+     * @param mixed $timestamp
+     */
+    public function setTimestamp($timestamp)
+    {
+        $this->timestamp = $timestamp;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTimestamp()
+    {
+        return $this->timestamp;
     }
 
     /**
@@ -282,5 +340,23 @@ class Review{
     {
         return $this->tips;
     }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+
+
 }
-?>

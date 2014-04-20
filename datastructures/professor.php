@@ -8,6 +8,7 @@
 
 class Professor{
 
+    private $user;
     private $name;
     private $courses;
     private $comments;
@@ -19,11 +20,12 @@ class Professor{
      * @param $b, list of courses taught by the professor
      * @param $c, comments about the professor
      */
-    function __construct($a, $b, $c){
+    function __construct($a, $b, $c, $d){
 
         $this->name = $a;
         $this->courses = $b;
         $this->comments = $c;
+        $this->user = $d;
     }
 
     /**

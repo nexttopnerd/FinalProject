@@ -54,6 +54,7 @@ else if (!empty($_POST)){
         else{
         session_start();
         $_SESSION["username"] = $data['username'];
+        $_SESSION["userid"] = $data['user_id'];
         $_SESSION["name"] = $name;
         $_SESSION["sid"] = $data['user_id'];
         header("Location: courses.php");
@@ -162,7 +163,9 @@ else if (!empty($_POST)){
     <div class="container">
         <h1>Welcome to Port Illinois<?php function setName($nm){ echo $nm;}?></h1>
         <p>Port Illinois is a unique website for University of Illinois students to provide course evaluations, create meetups and connect to other University of Illinois students</p>
-        <p><a href="register.php" class="btn btn-primary btn-lg" role="button">Register Now!</a></p>
+        <? if(($_SESSION["username"]=="")):?>
+            <p><a href="register.php" class="btn btn-primary btn-lg" role="button">Register Now!</a></p>
+        <? endif; ?>
     </div>
 </div>
 
