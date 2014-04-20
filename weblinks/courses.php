@@ -50,7 +50,8 @@ session_start();
             <ul class="nav navbar-nav">
                 <li><a href="#">About us</a></li>
                 <li class="active"><a href="courses.php">Courses</a></li>
-                <li><a href="meetups.php">Meetups</a></li>
+                <li><a href="meetups.php">Meetups</a>
+                <li><a href="connect.php">Connect</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">

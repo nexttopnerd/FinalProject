@@ -21,6 +21,9 @@ session_start();
     <!-- Custom styles for this template -->
     <link href="../css/jumbotron.css" rel="stylesheet">
 
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
     <script>
         /**
          * ajax function set up
@@ -56,51 +59,38 @@ session_start();
 
 
         /**
-         * ajax function to insert comments into the database asynchronously
+         * ajax function to insert course into the database asynchronously
          *
-         * @param content, name of the assignment
-         * @param mwhen, name of file in the assignment
-         * @param mwhere, name of the user who posted the comment
+         * @param sid, student ID
+         * @param course, course ID
          */
-        function insertContent(content, mwhen, mwhere)
+        function joinMeetup(course)
         {
-
-            // jQuery AJAX Get Error Handler
-            //$.get("insertIntoDb.php");
-
-            var cnt = document.getElementById("activity").value;
-            var mwh = document.getElementById("when").value;
-            var mwhr = document.getElementById("where").value;
+            var course_id = document.getElementById("course").value;
             if (window.XMLHttpRequest)
-             {// code for IE7+, Firefox, Chrome, Opera, Safari
-             xmlhttp=new XMLHttpRequest();
-             }
-             else
-             {// code for IE6, IE5
-             xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-             }
-
-            //opening the xml http request
-            alert("insertMeetupContent.php?content="+cnt+"&mwhen="+mwh+"&mwhere="+mwhr);
-            xmlhttp.open("POST","insertMeetupContent.php?content="+cnt+"&mwhen="+mwh+"&mwhere="+mwhr,false);
+            {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp=new XMLHttpRequest();
+            }
+            else
+            {// code for IE6, IE5
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            course_id = "CS "+course_id;
+            alert(course_id);
+            xmlhttp.open("POST","addCourse.php?course="+course_id,false);
             xmlhttp.send();
-
 
             //loading the new set of comments after a new comment has been posted
             //loadComments(assign, file);
+            window.location.reload();
         }
     </script>
 
-    <!-- Just for debugging purposes. Don't actually copy this line! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>-->
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-
-
-
 
     <![endif]-->
 </head>
@@ -137,35 +127,68 @@ session_start();
     <?php
 
     require '../resources/database.php';
+    $cntid = $_GET["cntid"];
 
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "SELECT * FROM meetups";
+    $sql = "SELECT * FROM meetups WHERE id = '$cntid'";
 
     foreach($pdo->query($sql) as $row){
-        echo '<h4><a href="meetupDetail.php?cntid='.$row['id'].'">'.$row['content'].'</a></h4>';
-
+        echo '<h3>'.$row['content'].'</h3>';
+        echo '<p>By: '.$row['user'].'<p>';
+        echo '<p>Where: '.$row['mwhere'].'<p>';
+        echo '<p>When: '.$row['mwhen'].'<p>';
+        echo"<br>";
     }
 
     Database::disconnect();
 
     ?>
-    <hr>
     <p></p>
-    <form method="post" action="" onsubmit="insertContent('<?php echo $_POST['activity']; ?>', '<?php echo $_POST['mwhen']; ?>',
-        '<?php echo $_POST['mwhere']; ?>'); return false;">
-        <div class="form-group">
-        <textarea style="width: 500px;" name="activity" id="activity" value="activity" placeholder="Password" class="form-control">Add an activity, find study groups, hangout...</textarea>
-        </div>
-        <div class="form-group">
-        <textarea style="width: 300px;" id="where" name="mwhere"  class="form-control">Where</textarea>
-        </div>
-        <div class="form-group">
-        <input style="width: 300px;" type="date" id="when" name="mwhen" class="form-control">
-        </div>
-        <input class="btn btn-primary btn-lg" name="submit" type="submit" value="submit" />
-    </form>
 
+    <hr>
+    <div>
+        <?php
+        $joined = 0;
+        $cntid = $_GET["cntid"];
+        $pdo = Database::connect();
+        $cid = $_SESSION["sid"];
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "SELECT COUNT(*) FROM meetupjoin WHERE mid = '$cntid'";
+
+        foreach($pdo->query($sql) as $row){
+            echo $row[0];
+            echo " people have joined!!!";
+        }
+        ?>
+    </div>
+    <hr>
+    <div>
+        <?php
+        function mjoin(){
+            echo "here";
+        }
+
+        $joined = 0;
+        $cntid = $_GET["cntid"];
+        $pdo = Database::connect();
+        $cid = $_SESSION["sid"];
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "SELECT * FROM meetupjoin WHERE uid = '$cid' AND mid = '$cntid'";
+
+        foreach($pdo->query($sql) as $row){
+            $joined = 1;
+        }
+
+        Database::disconnect();
+        if ($joined == 0){
+            echo '<p><a class="btn btn-primary btn-lg" href="joinMeetup.php?mid='.$cntid.'" role="button">Join</a></p>';
+        }
+        else{
+            echo '<p><a class="btn btn-primary btn-lg" href="leaveMeetup.php?mid='.$cntid.'" role="button">Leave</a></p>';
+        }
+        ?>
+    </div>
     <hr>
 
     <footer>

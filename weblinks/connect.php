@@ -1,3 +1,7 @@
+<?php
+@ob_start();
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,8 +43,20 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Connect</a>
+            <a class="navbar-brand" href="index.php">Home</a>
         </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="#">About us</a></li>
+                <li><a href="courses.php">Courses</a></li>
+                <li><a href="meetups.php">Meetups</a>
+                <li class="active"><a href="connect.php">Connect</a></li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"> Hello <?php echo $_SESSION["username"];?>!</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
     </div>
 </div>
 
@@ -49,13 +65,13 @@
     <form method="post">
         <div>
             <br>
-            <h4> Connect to your peers. Find students taking the same course or who share the same interests as you. Click one of the buttons to get started.</h4>
+            <h4> Connect to your peers. Find students taking the same courses as you and connect to them</h4>
             <br>
         </div>
         <div class="form-group">
-            <input class="btn btn-primary btn-lg" name="submit_course" type="submit" value="Same Courses" />
-
-            <input class="btn btn-primary btn-lg" name="submit_interest" type="submit" value="Same Interests" />
+            <?php require ("findSame.php"); ?>
+            <p><a class="btn btn-primary btn-lg" href="addCourseInterest.php" role="button">Add Courses</a></p>
+            <p><a class="btn btn-primary btn-lg" href="dropCourse.php" role="button">Drop Courses</a></p>
         </div>
     </form>
 

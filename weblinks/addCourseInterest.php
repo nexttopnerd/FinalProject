@@ -2,7 +2,6 @@
 @ob_start();
 session_start();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,8 +17,12 @@ session_start();
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
 
+
     <!-- Custom styles for this template -->
     <link href="../css/jumbotron.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 
     <script>
         /**
@@ -56,50 +59,37 @@ session_start();
 
 
         /**
-         * ajax function to insert comments into the database asynchronously
+         * ajax function to insert course into the database asynchronously
          *
-         * @param content, name of the assignment
-         * @param mwhen, name of file in the assignment
-         * @param mwhere, name of the user who posted the comment
+         * @param sid, student ID
+         * @param course, course ID
          */
-        function insertContent(content, mwhen, mwhere)
+        function insertCourse(course)
         {
-
-            // jQuery AJAX Get Error Handler
-            //$.get("insertIntoDb.php");
-
-            var cnt = document.getElementById("activity").value;
-            var mwh = document.getElementById("when").value;
-            var mwhr = document.getElementById("where").value;
+            var course_id = document.getElementById("course").value;
             if (window.XMLHttpRequest)
-             {// code for IE7+, Firefox, Chrome, Opera, Safari
-             xmlhttp=new XMLHttpRequest();
-             }
-             else
-             {// code for IE6, IE5
-             xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-             }
-
-            //opening the xml http request
-            alert("insertMeetupContent.php?content="+cnt+"&mwhen="+mwh+"&mwhere="+mwhr);
-            xmlhttp.open("POST","insertMeetupContent.php?content="+cnt+"&mwhen="+mwh+"&mwhere="+mwhr,false);
+            {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp=new XMLHttpRequest();
+            }
+            else
+            {// code for IE6, IE5
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            course_id = "CS "+course_id;
+            alert(course_id);
+            xmlhttp.open("POST","addCourse.php?course="+course_id,false);
             xmlhttp.send();
-
 
             //loading the new set of comments after a new comment has been posted
             //loadComments(assign, file);
+            window.location.reload();
         }
     </script>
 
-    <!-- Just for debugging purposes. Don't actually copy this line! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>-->
+    <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-
-
 
 
     <![endif]-->
@@ -122,7 +112,7 @@ session_start();
             <ul class="nav navbar-nav">
                 <li><a href="#">About us</a></li>
                 <li><a href="courses.php">Courses</a></li>
-                <li class="active"><a href="meetups.php">Meetups</a>
+                <li><a href="meetups.php">Meetups</a>
                 <li><a href="connect.php">Connect</a></li>
 
             </ul>
@@ -134,43 +124,57 @@ session_start();
 </div>
 
 <div class="container">
-    <?php
+    <br>
+    <h4>Courses you are taking:<h4>
+            <div>
+                <?php
+                require ("../resources/database.php");
 
-    require '../resources/database.php';
+                $courses = array();
+                $pdo = Database::connect();
 
-    $pdo = Database::connect();
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "SELECT * FROM meetups";
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $stid = $_SESSION["sid"];
+                $sql = "SELECT * FROM enrollment WHERE studentID = '$stid'";
 
-    foreach($pdo->query($sql) as $row){
-        echo '<h4><a href="meetupDetail.php?cntid='.$row['id'].'">'.$row['content'].'</a></h4>';
+                foreach($pdo->query($sql) as $row){
+                    echo $row['courseID'];
+                    echo"<br>";
+                }
 
-    }
+                Database::disconnect();
+                ?>
+            </div>
+            <form method="post" action="" onsubmit="insertCourse('<?php echo $_POST['course']; ?>'); return false;">
+                <div class="form-group">
+                    <br>
+                    <select name="course" id="course" value="course">
+                        <?php
 
-    Database::disconnect();
 
-    ?>
+                        $courses = array();
+                        $pdo = Database::connect();
+
+                        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                        $sql = "SELECT * FROM Courses";
+
+                        foreach($pdo->query($sql) as $row){
+                            $token = $row['Code'];
+                            $first_token  = strtok($token, ' ');
+                            $second_token = strtok(' ');
+                            echo '<option value='.$second_token.' id="crs">'.$row['Code'].'</option>';
+                        }
+
+                        Database::disconnect();
+                        ?>
+                    </select>
+                </div>
+                <input class="btn btn-primary btn-lg" name="add_course" type="submit" value="Add Course" />
+            </form>
+
     <hr>
-    <p></p>
-    <form method="post" action="" onsubmit="insertContent('<?php echo $_POST['activity']; ?>', '<?php echo $_POST['mwhen']; ?>',
-        '<?php echo $_POST['mwhere']; ?>'); return false;">
-        <div class="form-group">
-        <textarea style="width: 500px;" name="activity" id="activity" value="activity" placeholder="Password" class="form-control">Add an activity, find study groups, hangout...</textarea>
-        </div>
-        <div class="form-group">
-        <textarea style="width: 300px;" id="where" name="mwhere"  class="form-control">Where</textarea>
-        </div>
-        <div class="form-group">
-        <input style="width: 300px;" type="date" id="when" name="mwhen" class="form-control">
-        </div>
-        <input class="btn btn-primary btn-lg" name="submit" type="submit" value="submit" />
-    </form>
 
-    <hr>
 
-    <footer>
-        <p>&copy; Company 2014</p>
-    </footer>
 </div> <!-- /container -->
 
 
