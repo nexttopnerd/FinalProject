@@ -78,9 +78,36 @@ session_start();
             xmlhttp.open("POST","addCourse.php?course="+course_id,false);
             xmlhttp.send();
 
-            //loading the new set of comments after a new comment has been posted
-            //loadComments(assign, file);
-            window.location.reload();
+            //loading the div containing the courses when a new course is added
+            loadCourses();
+        }
+
+        /**
+         *Loads and displays all the courses the current user is taking asynchronousy
+         *
+         */
+        function loadCourses()
+        {
+
+            var xmlhttp;
+            var rr = 1;
+            if (window.XMLHttpRequest)
+            {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp=new XMLHttpRequest();
+            }
+            else
+            {// code for IE6, IE5
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange=function()
+            {
+                if (xmlhttp.status==200)
+                {
+                    document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open("POST","enrolledCourses.php?reset="+rr,true);
+            xmlhttp.send();
         }
     </script>
 
@@ -124,24 +151,8 @@ session_start();
 <div class="container">
     <br>
     <h4>Courses you are taking:<h4>
-            <div>
-                <?php
-                require ("../resources/database.php");
-                //list of courses the user is enrolled in
-                $courses = array();
-                $pdo = Database::connect();
-
-                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $stid = $_SESSION["sid"];
-                $sql = "SELECT * FROM enrollment WHERE studentID = '$stid'";
-
-                foreach($pdo->query($sql) as $row){
-                    echo $row['courseID'];
-                    echo"<br>";
-                }
-
-                Database::disconnect();
-                ?>
+            <div id="myDiv">
+                <?php require ("enrolledCourses.php");?>
             </div>
             <form method="post" action="" onsubmit="insertCourse(); return false;">
                 <div class="form-group">
@@ -167,6 +178,7 @@ session_start();
                     </select>
                 </div>
                 <input class="btn btn-primary btn-lg" name="add_course" type="submit" value="Add Course" />
+                <a class="btn btn-large" href="sameCourses.php">Back</a>
             </form>
 
     <hr>

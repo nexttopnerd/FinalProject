@@ -187,7 +187,6 @@ else if (!empty($_POST)){
             <h2>Connect</h2>
             <p>Find and connect to University of Illinois students who are taking same course as you or share same interests as you. Make new friends and get to know people who share the same interests and passion as you</p>
             <p><a class="btn btn-default" href="connect.php" role="button">Connect now &raquo;</a></p>
-            <p><a class="btn btn-default" href="addCourseInterest.php" role="button">Add Courses &raquo;</a></p>
         </div>
     </div>
 

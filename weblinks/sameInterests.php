@@ -65,13 +65,12 @@ session_start();
     <form method="post">
         <div>
             <br>
-            <h4> Connect to your peers. Find students taking the same courses or those who share the same interests as you.
-            Click on one of the following buttons to explore more.</h4>
+            <h4> Following students match your interests.</h4>
             <br>
         </div>
         <div class="form-group">
-            <p><a class="btn btn-primary btn-lg" href="sameCourses.php" role="button">Courses</a></p>
-            <p><a class="btn btn-primary btn-lg" href="sameInterests.php" role="button">Interests</a></p>
+
+            <p><a class="btn btn-primary btn-lg" href="updateInterests.php" role="button">Update Interests</a></p>
         </div>
     </form>
 

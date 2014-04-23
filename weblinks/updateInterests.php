@@ -50,7 +50,6 @@ if (!empty($_POST)){
 
     if($valid == true){
         header("Location: insertMeetupContent.php?content=$content&mwhen=$start&mtill=$end&mwhere=$location");
-
     }
 
 }
@@ -125,33 +124,6 @@ if (!empty($_POST)){
             var mtl = document.getElementById("till").value;
             var mwhr = document.getElementById("where").value;
             if (window.XMLHttpRequest)
-             {// code for IE7+, Firefox, Chrome, Opera, Safari
-             xmlhttp=new XMLHttpRequest();
-             }
-             else
-             {// code for IE6, IE5
-             xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-             }
-
-            //opening the xml http request
-            alert(cnt);
-            xmlhttp.open("POST","insertMeetupContent.php?content="+cnt+"&mwhen="+mwh+"&mtill="+mtl+"&mwhere="+mwhr,false);
-            xmlhttp.send();
-
-            //window.location.reload();
-
-            //loading the new set of comments after a new comment has been posted
-            loadMeetups();
-        }
-
-        /**
-         *Loads and displays all the valid meetups asynchronousy
-         *
-         */
-        function loadMeetups()
-        {
-            var xmlhttp;
-            if (window.XMLHttpRequest)
             {// code for IE7+, Firefox, Chrome, Opera, Safari
                 xmlhttp=new XMLHttpRequest();
             }
@@ -159,15 +131,16 @@ if (!empty($_POST)){
             {// code for IE6, IE5
                 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
             }
-            xmlhttp.onreadystatechange=function()
-            {
-                if (xmlhttp.status==200)
-                {
-                    document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
-                }
-            }
-            xmlhttp.open("POST","displayMeetups.php",true);
+
+            //opening the xml http request
+
+            xmlhttp.open("POST","insertMeetupContent.php?content="+cnt+"&mwhen="+mwh+"&mtill="+mtl+"&mwhere="+mwhr,false);
             xmlhttp.send();
+
+            window.location.reload();
+
+            //loading the new set of comments after a new comment has been posted
+            //loadComments(assign, file);
         }
     </script>
 
@@ -203,8 +176,8 @@ if (!empty($_POST)){
             <ul class="nav navbar-nav">
                 <li><a href="#">About us</a></li>
                 <li><a href="courses.php">Courses</a></li>
-                <li class="active"><a href="meetups.php">Meetups</a>
-                <li><a href="connect.php">Connect</a></li>
+                <li><a href="meetups.php">Meetups</a>
+                <li class="active"><a href="connect.php">Connect</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -215,69 +188,77 @@ if (!empty($_POST)){
 </div>
 
 <div class="container">
-    <div id = "myDiv">
-    <?php
-    //displays all the valid meetups
-    require('displayMeetups.php');
-    ?>
-    </div>
-
-    <hr>
-    <p></p>
+    <br>
+    <h3>Update your interests</h3>
 
     <form class="form-horizontal" action="meetups.php" method="post">
-        <div class="control-group <?php echo !empty($contentError)?'error':'';?>">
-            <label class="control-label">Content: </label>
-            <div class="controls">
-                <textarea style="width: 500px;" id ="content" name="mcontent" type="content"  class="form-control" value="<?php echo !empty($content)?$content:'';?>">Add an activity, find study groups, hangout...</textarea>
-                <?php if (!empty($contentError)): ?>
-                    <span class="help-inline"><?php echo $contentError;?></span>
-                <?php endif; ?>
-            </div>
-        </div>
 
-        <div class="control-group <?php echo !empty($locationError)?'error':'';?>">
-            <label class="control-label">Location: </label>
-            <div class="controls">
-                <textarea style="width: 300px;" id="where" name="mwhere"  class="form-control" value="<?php echo !empty($location)?$location:'';?>">Where</textarea>
-                <?php if (!empty($locationError)): ?>
-                    <span class="help-inline"><?php echo $locationError;?></span>
-                <?php endif; ?>
-            </div>
-        </div>
-
-        <div class="control-group <?php echo !empty($startError)?'error':'';?>">
-            <label class="control-label">From: </label>
-            <div class="controls">
-                <input style="width: 300px;" id="when" name="mwhen" type="date" class="form-control" value="<?php echo !empty($start)?$start:'';?>">
-                <?php if (!empty($startError)): ?>
-                    <span class="help-inline"><?php echo $startError;?></span>
-                <?php endif; ?>
-            </div>
-        </div>
-
-        <div class="control-group <?php echo !empty($endError)?'error':'';?>">
-            <label class="control-label">Till: </label>
-            <div class="controls">
-                <input style="width: 300px;" id="till" name="mtill" type="date" class="form-control" value="<?php echo !empty($end)?$end:'';?>">
-                <?php if (!empty($endError)): ?>
-                    <span class="help-inline"><?php echo $endError;?></span>
-                <?php endif; ?>
-            </div>
-        </div>
-
-
+        <label class="control-label">What do you like to do in your leisure time?</label>
         <br>
+        <select name="leisure" form="leisureform">
+            <option value="volvo">Read books</option>
+            <option value="opel">Play videogames</option>
+            <option value="audi">Hang out with friends</option>
+            <option value="audi">Sports</option>
+            <option value="audi">Partying</option>
+            <option value="audi">Movies/TV shows</option>
+            <option value="audi">Explore CS beyond classes</option>
+        </select>
+        <br><br>
 
-        <div class="form-actions">
-            <button type="submit" class="btn btn-large btn-primary">Submit!</button>
-        </div>
+        <label class="control-label">What field of CS intrigues you the most?</label>
+        <br>
+        <select name="leisure" form="leisureform">
+            <option value="volvo">Artificial Intelligence</option>
+            <option value="saab">Systems programming</option>
+            <option value="opel">Theoretical computer science</option>
+            <option value="audi">Computer architecture and engineering</option>
+            <option value="saab">Computer graphics and visualization</option>
+            <option value="saab">Computer security and cryptography</option>
+            <option value="saab">Computational science</option>
+            <option value="saab">Databases</option>
+            <option value="saab">Health informatics</option>
+            <option value="saab">Sofware engineering</option>
+
+        </select>
+        <br><br>
+
+
+        <label class="control-label">Do you prefer indoors or outdoors?</label>
+        <br>
+        <select name="leisure" form="leisureform">
+            <option value="volvo">Indoors</option>
+            <option value="saab">Outdoors</option>
+        </select>
+        <br><br>
+
+
+        <label class="control-label">What do you like to do in your leisure time?</label>
+        <br>
+        <select name="leisure" form="leisureform">
+            <option value="volvo">Reading books</option>
+            <option value="saab">Play outdoors</option>
+            <option value="opel">Play videogames</option>
+            <option value="audi">Hang out with friends</option>
+        </select>
+        <br><br>
+
+
+        <label class="control-label">What do you like to do in your leisure time?</label>
+        <br>
+        <select name="leisure" form="leisureform">
+            <option value="volvo">Reading books</option>
+            <option value="saab">Play outdoors</option>
+            <option value="opel">Play videogames</option>
+            <option value="audi">Hang out with friends</option>
+        </select>
+        <br><br>
 
         <hr>
 
-    <footer>
-        <p>&copy; Company 2014</p>
-    </footer>
+        <footer>
+            <p>&copy; Company 2014</p>
+        </footer>
 </div> <!-- /container -->
 
 

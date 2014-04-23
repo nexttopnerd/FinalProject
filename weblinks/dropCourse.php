@@ -7,7 +7,6 @@ session_start();
  * Date: 4/17/14
  * Time: 2:44 PM
  */
-require ("../resources/database.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -86,8 +85,36 @@ require ("../resources/database.php");
             xmlhttp.send();
 
             //loading the new set of comments after a new comment has been posted
-            //loadComments(assign, file);
+            //loadCourses();
             window.location.reload();
+        }
+
+        /**
+         *Loads and displays all the courses the current user is taking asynchronousy
+         *
+         */
+        function loadCourses()
+        {
+
+            var xmlhttp;
+            var rr = 1;
+            if (window.XMLHttpRequest)
+            {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp=new XMLHttpRequest();
+            }
+            else
+            {// code for IE6, IE5
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange=function()
+            {
+                if (xmlhttp.status==200)
+                {
+                    document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open("POST","dropedCourses.php?reset="+rr,true);
+            xmlhttp.send();
         }
     </script>
 
@@ -135,28 +162,15 @@ require ("../resources/database.php");
                 <div class="form-group">
                     <br>
                     <select name="course" id="course" value="course">
+                        <div id ="myDiv">
                         <?php
-                        //list of courses the user is enrolled in
-                        $courses = array();
-                        $pdo = Database::connect();
-
-                        $sid = $_SESSION["sid"];
-                        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                        $sql = "SELECT * FROM enrollment WHERE studentID = '$sid'";
-
-                        foreach($pdo->query($sql) as $row){
-                            $token = $row['courseID'];
-                            echo $token;
-                            $first_token  = strtok($token, ' ');
-                            $second_token = strtok(' ');
-                            echo '<option value='.$second_token.' id="crs">'.$row['courseID'].'</option>';
-                        }
-
-                        Database::disconnect();
+                        require('dropedCourses.php');
                         ?>
+                        </div>
                     </select>
                 </div>
                 <input class="btn btn-primary btn-lg" name="drop_course" type="submit" value="Drop Course" />
+                <a class="btn btn-large" href="sameCourses.php">Back</a>
             </form>
 
             <hr>
