@@ -68,7 +68,7 @@ if (isset($_POST["submit"])){
         $code = $_GET["title"];
         $user = $_SESSION["username"];
         $q->execute(array($code, $professor, $ta, $user, $semester, $grade,
-            $difficulty, $enjoyment, $time, exams, $exam, $mps, $papers, $pCom, $cCom, $tips,
+            $difficulty, $enjoyment, $time, $exams, $exam, $mps, $papers, $pCom, $cCom, $tips,
             $type
         ));
     }

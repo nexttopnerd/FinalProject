@@ -18,6 +18,9 @@ foreach($pdo->query($sql) as $row){
     $cid = $row['courseID'];
     $sql_two = "SELECT * FROM enrollment WHERE studentID != '$stid' AND courseID = '$cid'";
 
+
+    //echo '<table><tr><td width="15%"><div class="glyphicon glyphicon-user"></div></td><td><p>Students taking '.$cid.'<p></td></tr></table>';
+
     echo "Students taking ".$cid;
     echo "<br>";
     echo "&nbsp"."&nbsp"."&nbsp";

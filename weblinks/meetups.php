@@ -216,10 +216,11 @@ if (!empty($_POST)){
 
 <div class="container">
     <div id = "myDiv">
-    <?php
-    //displays all the valid meetups
-    require('displayMeetups.php');
-    ?>
+        <br>
+        <?php
+        //displays all the valid meetups
+        require('displayMeetups.php');
+        ?>
     </div>
 
     <hr>

@@ -157,7 +157,12 @@ session_start();
 
 <div class="container">
     <br>
-    <h4>Drop a course:<h4>
+    <table>
+        <tr>
+            <td width="15%"><div class="glyphicon glyphicon-trash"></div></td>
+            <td><h4>Drop a course:<h4></td>
+        </tr>
+    </table>
             <form method="post" action="" onsubmit="dropCourse(); return false;">
                 <div class="form-group">
                     <br>
@@ -169,12 +174,15 @@ session_start();
                         </div>
                     </select>
                 </div>
+                <br>
                 <input class="btn btn-primary btn-lg" name="drop_course" type="submit" value="Drop Course" />
                 <a class="btn btn-large" href="sameCourses.php">Back</a>
             </form>
 
             <hr>
-
+    <footer>
+        <p>&copy; Company 2014</p>
+    </footer>
 
 </div> <!-- /container -->
 

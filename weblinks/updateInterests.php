@@ -189,7 +189,9 @@ if (!empty($_POST)){
 
 <div class="container">
     <br>
-    <h3>Update your interests</h3>
+
+    <div style="position:relative; top: 15px;" class="glyphicon glyphicon-glass"></div>
+    <div style="position:relative; left: 20px; top: -30px;"><h3>Update your interests</h3></div>
 
     <form class="form-horizontal" action="meetups.php" method="post">
 

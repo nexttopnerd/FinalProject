@@ -30,6 +30,37 @@ include_once ("reviewprocessing.php");
 
         <!-- Just for debugging purposes. Don't actually copy this line! -->
         <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $("#div2" ).fadeOut("fast");
+                $("#div3" ).fadeOut("fast");
+            });
+
+            $(document).ready(function(){
+                $("#b1").click(function(){
+                    $("#div2" ).fadeOut("fast");
+                    $("#div3" ).fadeOut("fast");
+                    $("#div1").fadeToggle("slow");
+                });
+            });
+
+            $(document).ready(function(){
+                $("#b2").click(function(){
+                    $("#div1" ).fadeOut("fast");
+                    $("#div3" ).fadeOut("fast");
+                    $("#div2").fadeToggle("slow");
+                });
+            });
+
+            $(document).ready(function(){
+                $("#b3").click(function(){
+                    $("#div1" ).fadeOut("fast");
+                    $("#div2" ).fadeOut("fast");
+                    $("#div3").fadeToggle("slow");
+                });
+            });
+        </script>
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -94,18 +125,33 @@ include_once ("reviewprocessing.php");
         ?>
 
         <hr>
-        Reviews
+        <table style="width: 100%;">
+            <tr>
+                <td align="left" width="30%"><button type="button" class="btn btn-default" id = "b1">Reviews</button></td>
+                <td align="center" width="40%"><button type="button" class="btn btn-default" id = "b2">Get Stats</button></td>
+                <td align="right" width="30%"><button type="button" class="btn btn-default" id = "b3">Submit a review</button></td>
+            </tr>
+        </table>
+
         <hr>
-
-        <? include_once('displayreviews.php'); ?>
-
-
+        <div id="div1">
+            <? include_once('displayreviews.php'); ?>
 
 
-        <?
-        if ($userfound==false)
-            include_once('submitreview.php');?>
-        <hr>
+        </div>
+
+        <div id="div2">
+            <?php require('getCourseStats.php') ?>
+        </div>
+
+        <div id = "div3">
+            <?
+            if ($userfound==false)
+                include_once('submitreview.php');
+            else{
+                echo '<h4>You have already submitted a review!!!</h4>';
+            }?>
+        </div>
 
         <footer>
             <p>&copy; Company 2014</p>

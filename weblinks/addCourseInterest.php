@@ -150,7 +150,12 @@ session_start();
 
 <div class="container">
     <br>
-    <h4>Courses you are taking:<h4>
+    <table>
+        <tr>
+            <td width="10%"><div class="glyphicon glyphicon-pencil"></div></td>
+            <td><h4>Courses you are taking:<h4></td>
+        </tr>
+    </table>
             <div id="myDiv">
                 <?php require ("enrolledCourses.php");?>
             </div>
@@ -183,6 +188,9 @@ session_start();
 
     <hr>
 
+    <footer>
+        <p>&copy; Company 2014</p>
+    </footer>
 
 </div> <!-- /container -->
 

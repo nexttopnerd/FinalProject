@@ -138,6 +138,7 @@ session_start();
         echo '<p>By: '.$row['user'].'<p>';
         echo '<p>Where: '.$row['mwhere'].'<p>';
         echo '<p>When: '.$row['mwhen'].'<p>';
+        echo '<p>Till: '.$row['mtill'].'<p>';
         echo"<br>";
     }
 

@@ -28,7 +28,9 @@
         else
         {
             //echo all the valid meetups which are still live
-            echo '<h4><a href="meetupDetail.php?cntid='.$row['id'].'">'.$row['content'].'</a></h4>';
+            echo '<table><tr><td width="0%"><div class="glyphicon glyphicon-chevron-right"></div></td><td><h4><a href="meetupDetail.php?cntid='.$row['id'].'">'.$row['content'].'</a></h4></td></tr></table>';
+
+            //echo '<h4><a href="meetupDetail.php?cntid='.$row['id'].'">'.$row['content'].'</a></h4>';
         }
     }
 
