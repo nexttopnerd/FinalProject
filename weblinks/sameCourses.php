@@ -70,8 +70,10 @@ session_start();
         </div>
         <div class="form-group">
             <?php require ("findSame.php"); ?>
-            <p><a class="btn btn-primary btn-lg" href="addCourseInterest.php" role="button">Add Courses</a></p>
-            <p><a class="btn btn-primary btn-lg" href="dropCourse.php" role="button">Drop Courses</a></p>
+            <hr>
+            <a class="btn btn-primary btn-lg" href="addCourseInterest.php" role="button">Add Courses</a>
+            <a class="btn btn-primary btn-lg" href="dropCourse.php" role="button">Drop Courses</a>
+            <a class="btn btn-large" href="connect.php">Back</a>
         </div>
     </form>
 

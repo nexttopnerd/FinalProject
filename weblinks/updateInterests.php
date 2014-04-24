@@ -259,6 +259,7 @@ session_start();
 
         <hr>
             <input class="btn btn-primary btn-lg" name="drop_course" type="submit" value="Update" />
+            <a class="btn btn-large" href="sameInterests.php">Back</a>
     </form>
     <hr>
         <footer>

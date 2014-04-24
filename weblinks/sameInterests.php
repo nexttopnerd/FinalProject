@@ -65,32 +65,50 @@ session_start();
     <form method="post">
         <div>
             <br>
-                <h4> Your Interests.</h4>
-            <br>
+                <h3> Your Interests.</h3>
 
             <?php
             require ("../resources/database.php");
             //list of courses the user is enrolled in
             $courses = array();
             $pdo = Database::connect();
+            $exists = 0;
 
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $stid = $_SESSION["sid"];
             $sql = "SELECT * FROM interests WHERE user_id = '$stid'";
 
             foreach($pdo->query($sql) as $row){
-                echo $row['csinterest'];
-                echo"<br>";
-                echo $row['tutorone'];
-                echo"<br>";
-                echo $row['tutortwo'];
-                echo"<br>";
-                echo $row['leisure'];
-                echo"<br>";
-                echo $row['door'];
-                echo"<br>";
-                echo $row['look'];
-                echo"<br>";
+                echo '<hr>';
+                echo '<table>
+                        <tr>
+                        <td width="20%"><div class="glyphicon glyphicon-book"></div></td>
+                        <td><h4><i>Academia</i><h4></td>
+                    </tr>
+                </table>';
+                echo '<p style="font-size: 16px;"><b>CS interest: </b>'.$row['csinterest'].'</p>';
+                if($row['tutorone'] != -1)
+                    echo '<p style="font-size: 16px;"><b>Tutor for: </b> CS '.$row['tutorone'].'</p>';
+                if($row['tutortwo'] != -1)
+                    echo '<p style="font-size: 16px;"><b>Tutor for: </b> CS '.$row['tutortwo'].'</p>';
+
+                echo '<hr>';
+                echo '<table>
+                        <tr>
+                            <td width="15%"><div class="glyphicon glyphicon-globe"></div></td>
+                            <td><h4><i>Extra Curricular</i><h4></td>
+                        </tr>
+                    </table>';
+                echo '<p style="font-size: 16px;"><b>Leisure time activity: </b>'.$row['leisure'].'</p>';
+                echo '<p style="font-size: 16px;"><b>Indoor/Outdoor: </b>'.$row['door'].'</p>';
+                echo '<p style="font-size: 16px;"><b>Looking for: </b>'.$row['look'].'</p>';
+                echo '<hr>';
+
+                $exists = 1;
+            }
+
+            if($exists == 0){
+                echo '<p style="font-size: 16px;"><b>You have not updated your interests yet. Do now and connect with your peers. </b></p>';
             }
 
             Database::disconnect();
@@ -98,7 +116,8 @@ session_start();
         </div>
         <div class="form-group">
 
-            <p><a class="btn btn-primary btn-lg" href="updateInterests.php" role="button">Update Interests</a></p>
+            <a class="btn btn-primary btn-lg" href="updateInterests.php" role="button">Update Interests</a>
+            <a class="btn btn-large" href="connect.php">Back</a>
         </div>
     </form>
 
