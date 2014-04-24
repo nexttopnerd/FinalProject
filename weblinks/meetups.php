@@ -33,7 +33,7 @@ if (!empty($_POST)){
     //get current date
     date_default_timezone_set('America/Chicago');
     $today = date('Y-m-d');
-    if ($start < $today){
+    if ($start != null && $start < $today){
         $startError = "Cannot specify any earlier date than today's";
         $valid = false;
     }

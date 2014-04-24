@@ -2,60 +2,6 @@
 @ob_start();
 session_start();
 ?>
-<?php
-
-if (!empty($_POST)){
-    $contentError = null;
-    $locationError = null;
-
-    $content = $_POST["mcontent"];
-    $location = $_POST["mwhere"];
-    $start = $_POST["mwhen"];
-    $end = $_POST["mtill"];
-
-    $valid = true;
-
-    if (empty($content)){
-        $contentError = 'Please add some content';
-        $valid = false;
-    }
-
-    if (empty($location)){
-        $locationError = 'Please specify a location';
-        $valid = false;
-    }
-
-    if (empty($start)){
-        $startError = 'Please specify the start date';
-        $valid = false;
-    }
-
-    //get current date
-    date_default_timezone_set('America/Chicago');
-    $today = date('Y-m-d');
-    if ($start < $today){
-        $startError = "Cannot specify any earlier date than today's";
-        $valid = false;
-    }
-
-    if (empty($end)){
-        $endError = 'Please specify the end date';
-        $valid = false;
-    }
-
-    if ($end != null && $end < $start){
-        $endError = "End date can't be before the start date";
-        $valid = false;
-    }
-
-    if($valid == true){
-        header("Location: insertMeetupContent.php?content=$content&mwhen=$start&mtill=$end&mwhere=$location");
-    }
-
-}
-
-
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -110,19 +56,23 @@ if (!empty($_POST)){
 
 
         /**
-         * ajax function to insert meetup details into the database
+         * ajax function to update the interest details of the user
          *
          */
-        function insertContent()
+        function updateInterest()
         {
 
             // jQuery AJAX Get Error Handler
             //$.get("insertIntoDb.php");
 
-            var cnt = document.getElementById("activity").value;
-            var mwh = document.getElementById("when").value;
-            var mtl = document.getElementById("till").value;
-            var mwhr = document.getElementById("where").value;
+            var int = document.getElementById("interest").value;
+            var tone = document.getElementById("tutorOne").value;
+            var ttwo = document.getElementById("tutorTwo").value;
+            var leis = document.getElementById("leisure").value;
+            var dor = document.getElementById("door").value;
+            var lok = document.getElementById("look").value;
+
+
             if (window.XMLHttpRequest)
             {// code for IE7+, Firefox, Chrome, Opera, Safari
                 xmlhttp=new XMLHttpRequest();
@@ -134,13 +84,11 @@ if (!empty($_POST)){
 
             //opening the xml http request
 
-            xmlhttp.open("POST","insertMeetupContent.php?content="+cnt+"&mwhen="+mwh+"&mtill="+mtl+"&mwhere="+mwhr,false);
+            xmlhttp.open("POST","storeInterests.php?interest="+int+"&tone="+tone+"&ttwo="+ttwo+"&leis="+leis+"&dor="
+                +dor+"&lok="+lok,false);
             xmlhttp.send();
 
-            window.location.reload();
-
-            //loading the new set of comments after a new comment has been posted
-            //loadComments(assign, file);
+            window.location.href = "sameInterests.php";
         }
     </script>
 
@@ -192,72 +140,127 @@ if (!empty($_POST)){
 
     <div style="position:relative; top: 15px;" class="glyphicon glyphicon-glass"></div>
     <div style="position:relative; left: 20px; top: -30px;"><h3>Update your interests</h3></div>
-
-    <form class="form-horizontal" action="meetups.php" method="post">
-
-        <label class="control-label">What do you like to do in your leisure time?</label>
-        <br>
-        <select name="leisure" form="leisureform">
-            <option value="volvo">Read books</option>
-            <option value="opel">Play videogames</option>
-            <option value="audi">Hang out with friends</option>
-            <option value="audi">Sports</option>
-            <option value="audi">Partying</option>
-            <option value="audi">Movies/TV shows</option>
-            <option value="audi">Explore CS beyond classes</option>
-        </select>
-        <br><br>
+        <hr>
+    <form class="form-horizontal" action="" method="post" onsubmit="updateInterest(); return false;">
+        <table>
+            <tr>
+                <td width="20%"><div class="glyphicon glyphicon-book"></div></td>
+                <td><h4><i>Academia</i><h4></td>
+            </tr>
+        </table>
 
         <label class="control-label">What field of CS intrigues you the most?</label>
         <br>
-        <select name="leisure" form="leisureform">
-            <option value="volvo">Artificial Intelligence</option>
-            <option value="saab">Systems programming</option>
-            <option value="opel">Theoretical computer science</option>
-            <option value="audi">Computer architecture and engineering</option>
-            <option value="saab">Computer graphics and visualization</option>
-            <option value="saab">Computer security and cryptography</option>
-            <option value="saab">Computational science</option>
-            <option value="saab">Databases</option>
-            <option value="saab">Health informatics</option>
-            <option value="saab">Sofware engineering</option>
+        <select name="interest" id="interest" form="interestform">
+            <option value="Artificial Intelligence">Artificial Intelligence</option>
+            <option value="Systems programming">Systems programming</option>
+            <option value="Theoretical computer science">Theoretical computer science</option>
+            <option value="Computer architecture and engineering">Computer architecture and engineering</option>
+            <option value="Computer graphics and visualization">Computer graphics and visualization</option>
+            <option value="Computer security and cryptography">Computer security and cryptography</option>
+            <option value="Computational science">Computational science</option>
+            <option value="Databases">Databases</option>
+            <option value="Health informatics">Health informatics</option>
+            <option value="Sofware engineering">Sofware engineering</option>
 
         </select>
         <br><br>
+
+        <label class="control-label">Which course can you tutor for?</label>
+        <br>
+        <select name="tutorOne" id="tutorOne" form="tutorOneform">
+            <option value="-1">Select</option>
+            <?php
+            //list of all the courses offered in the department
+            require('../resources/database.php');
+            $courses = array();
+            $pdo = Database::connect();
+
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $sql = "SELECT * FROM Courses";
+
+            foreach($pdo->query($sql) as $row){
+                $token = $row['Code'];
+                $first_token  = strtok($token, ' ');
+                $second_token = strtok(' ');
+                echo '<option value='.$second_token.' id="crs">'.$row['Code'].'</option>';
+            }
+
+            Database::disconnect();
+            ?>
+        </select>
+        <br><br>
+
+        <label class="control-label">Is there a secondary course you wish to tutor for?</label>
+        <br>
+        <select name="tutorTwo" id="tutorTwo" form="tutorTwoform">
+            <option value="-1">Select</option>
+            <?php
+            //list of all the courses offered in the department
+            $courses = array();
+            $pdo = Database::connect();
+
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $sql = "SELECT * FROM Courses";
+
+            foreach($pdo->query($sql) as $row){
+                $token = $row['Code'];
+                $first_token  = strtok($token, ' ');
+                $second_token = strtok(' ');
+                echo '<option value='.$second_token.' id="crs">'.$row['Code'].'</option>';
+            }
+
+            Database::disconnect();
+            ?>
+        </select>
+        <br><br>
+        <hr>
+
+        <table>
+            <tr>
+                <td width="15%"><div class="glyphicon glyphicon-globe"></div></td>
+                <td><h4><i>Extra Curricular</i><h4></td>
+            </tr>
+        </table>
+
+
+
+            <label class="control-label">What do you like to do in your leisure time?</label>
+            <br>
+            <select name="leisure" id="leisure" form="leisureform">
+                <option value="Read books">Read books</option>
+                <option value="Play videogames">Play videogames</option>
+                <option value="Hang out with friends">Hang out with friends</option>
+                <option value="Sports">Sports</option>
+                <option value="Partying">Partying</option>
+                <option value="Movies/TV shows">Movies/TV shows</option>
+                <option value="Explore CS beyond classes">Explore CS beyond classes</option>
+            </select>
+            <br><br>
 
 
         <label class="control-label">Do you prefer indoors or outdoors?</label>
         <br>
-        <select name="leisure" form="leisureform">
-            <option value="volvo">Indoors</option>
-            <option value="saab">Outdoors</option>
+        <select name="door" id="door" form="doorform">
+            <option value="Indoors">Indoors</option>
+            <option value="Outdoors">Outdoors</option>
         </select>
         <br><br>
 
-
-        <label class="control-label">What do you like to do in your leisure time?</label>
+        <label class="control-label">What are you looking for?</label>
         <br>
-        <select name="leisure" form="leisureform">
-            <option value="volvo">Reading books</option>
-            <option value="saab">Play outdoors</option>
-            <option value="opel">Play videogames</option>
-            <option value="audi">Hang out with friends</option>
-        </select>
-        <br><br>
-
-
-        <label class="control-label">What do you like to do in your leisure time?</label>
-        <br>
-        <select name="leisure" form="leisureform">
-            <option value="volvo">Reading books</option>
-            <option value="saab">Play outdoors</option>
-            <option value="opel">Play videogames</option>
-            <option value="audi">Hang out with friends</option>
+        <select name="look" id="look" form="look">
+            <option value="Study group">Study group</option>
+            <option value="Hang out group">Hang out group</option>
+            <option value="Special interest group">Special interest group</option>
+            <option value="Interview practice group">Interview practice group</option>
         </select>
         <br><br>
 
         <hr>
-
+            <input class="btn btn-primary btn-lg" name="drop_course" type="submit" value="Update" />
+    </form>
+    <hr>
         <footer>
             <p>&copy; Company 2014</p>
         </footer>

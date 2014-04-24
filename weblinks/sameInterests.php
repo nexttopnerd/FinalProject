@@ -65,8 +65,36 @@ session_start();
     <form method="post">
         <div>
             <br>
-            <h4> Following students match your interests.</h4>
+                <h4> Your Interests.</h4>
             <br>
+
+            <?php
+            require ("../resources/database.php");
+            //list of courses the user is enrolled in
+            $courses = array();
+            $pdo = Database::connect();
+
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stid = $_SESSION["sid"];
+            $sql = "SELECT * FROM interests WHERE user_id = '$stid'";
+
+            foreach($pdo->query($sql) as $row){
+                echo $row['csinterest'];
+                echo"<br>";
+                echo $row['tutorone'];
+                echo"<br>";
+                echo $row['tutortwo'];
+                echo"<br>";
+                echo $row['leisure'];
+                echo"<br>";
+                echo $row['door'];
+                echo"<br>";
+                echo $row['look'];
+                echo"<br>";
+            }
+
+            Database::disconnect();
+            ?>
         </div>
         <div class="form-group">
 

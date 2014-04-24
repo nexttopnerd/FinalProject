@@ -1,7 +1,7 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: soniamohanlal
+ * Validates the input fields in the meetuos page.
+ * User: anirud
  * Date: 4/22/14
  * Time: 9:23 PM
  */
