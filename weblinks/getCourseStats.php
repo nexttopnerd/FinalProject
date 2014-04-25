@@ -110,3 +110,4 @@ if($count != 0){
 
         </div>
     </div>
+<?include_once('displayStatistics.php');?>

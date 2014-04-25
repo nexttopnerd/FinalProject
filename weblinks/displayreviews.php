@@ -262,4 +262,5 @@ foreach ($reviews as $review){
     </div>
     <hr>
 <?
-}?>
+}
+

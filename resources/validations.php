@@ -53,10 +53,8 @@ function checkAreaInput(&$field, &$fieldName, &$fieldIcon, &$fieldMessage){
     $field = trim($field);
     if ($field=="")
         setEmptyError($fieldName, $fieldIcon, $fieldMessage);
-    else if (!ctype_alnum(str_replace(' ','',$field)))
-        setTypeError($fieldName, $fieldIcon, $fieldMessage, "alphanumeric characters");
-    else if (strlen($field) > 100)
-        setLengthError($fieldName, $fieldIcon, $fieldMessage, "not exceed 100 characters");
+    else if (strlen($field) > 300)
+        setLengthError($fieldName, $fieldIcon, $fieldMessage, "not exceed 300 characters");
     else
         setSuccess($fieldName, $fieldIcon);
 
