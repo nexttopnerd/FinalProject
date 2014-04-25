@@ -51,6 +51,7 @@ session_start();
                 <li><a href="courses.php">Courses</a></li>
                 <li><a href="meetups.php">Meetups</a>
                 <li class="active"><a href="connect.php">Connect</a></li>
+                <li><a href="compareClasses.php">Compare</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
