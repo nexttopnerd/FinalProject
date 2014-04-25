@@ -1,6 +1,4 @@
 <?php
-session_start();
-error_reporting(E_ALL);
 
 include_once '../resources/database.php';
 $reviews = $courses[$_GET['title']]->getReviews();
@@ -136,8 +134,7 @@ foreach($reviews as $review){
         chart.draw(data, options);
     }
 </script>
-<? echo $dec1;
-var_dump($dec1);?>
+
 
 <h3 class="text-center">Grade Distributions</h3>
 <div id="chart_div">

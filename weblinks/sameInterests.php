@@ -64,8 +64,8 @@ session_start();
     <p></p>
     <form method="post">
         <div>
-            <br>
-                <h3> Your Interests.</h3>
+
+            <h3> Your Interests.</h3>
 
             <?php
             require ("../resources/database.php");
