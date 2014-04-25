@@ -86,21 +86,28 @@ foreach($_POST['class'] as $value)
     if(isset($_POST["submit"])){
 
             ?>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
-    <script type='text/javascript'>
+        <script type='text/javascript'>
         google.load('visualization', '1', {packages:['table']});
         google.setOnLoadCallback(drawTable);
         function drawTable() {
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Name');
             data.addColumn('string', 'Code');
+            data.addColumn('string', 'Credit');
+            data.addColumn('number','average difficulty' );
+            data.addColumn('number','average time');
+            data.addColumn('number', 'average enjoyment');
 
             data.addRows([
                 <? for($i=0; $i<count($classes); $i++):
                     if($i!=(count($classes)-1)):?>
-                        ['<? echo $classes[$i]->getTitle()?>', '<? echo $classes[$i]->getCode()?>'],
+                        ['<? echo $classes[$i]->getTitle()?>', '<? echo $classes[$i]->getCode()?>', '<? $classes[$i]->getCredit()?>',
+                        <? echo $diffAvgs[$i]?>, <? echo $timeAvgs[$i]?>, <? echo $enjAvgs[$i]?>],
                     <? else:?>
-                        ['<? echo $classes[$i]->getTitle()?>', '<? echo $classes[$i]->getCode()?>']
+                        ['<? echo $classes[$i]->getTitle()?>', '<? echo $classes[$i]->getCode()?>', '<? $classes[$i]->getCredit()?>',
+                            <? echo $diffAvgs[$i]?>, <? echo $timeAvgs[$i]?>, <? echo $enjAvgs[$i]?>]
                     <?
                     endif;
                    endfor;?>
