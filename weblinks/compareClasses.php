@@ -14,6 +14,7 @@ $diffAvgs = $timeAvgs = $enjAvgs = array();
 
 $courses = $_SESSION['view'];
 $courses = unserialize($courses);
+if(isset($_POST["submit"])):
 foreach($_POST['class'] as $value)
 {
     $classes[] = $courses[$value];
@@ -56,7 +57,7 @@ foreach($_POST['class'] as $value)
 
 }
 
-
+endif;
 
 
 ?>
