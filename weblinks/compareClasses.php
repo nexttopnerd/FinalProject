@@ -56,7 +56,6 @@ foreach($_POST['class'] as $value)
 
 
 }
-endif;
 
 endif;
 
