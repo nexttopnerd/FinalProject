@@ -135,7 +135,7 @@ include_once ("reviewprocessing.php");
 
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "SELECT * FROM users, interests WHERE users.user_id = '$sid' AND tutorone = '$cid' OR users.user_id = '$sid' AND tutortwo = '$cid'";
+        $sql = "SELECT * FROM users, interests WHERE users.user_id = interests.user_id AND tutorone = '$cid' OR users.user_id = interests.user_id AND tutortwo = '$cid'";
 
         foreach($pdo->query($sql) as $row){
 
