@@ -86,7 +86,7 @@ function compare($val, $rev_one, $rev_two){
     else
         return $rev_two;
 }
-
+$tid = $_GET['title'];
 $courses[$_GET['title']]->setReviews();
 $reviews = $courses[$_GET['title']]->getReviews();?>
 
@@ -97,14 +97,25 @@ $reviews = $courses[$_GET['title']]->getReviews();?>
                 window.location.href = ur+"&sort="+val;
             }
         </script>
-        <label>Sort by: </label>
-        <select id="sel_id" name="sel_name"  onchange="myFunction(this.value);">
-            <option value="-1">Select</option>
-            <option value="1">Difficulty </option>
-            <option value="2">Enjoyment </option>
-            <option value="3">Time commitment </option>
-            <option value="4">Professor </option>
-        </select>
+
+
+        <table  style="width: 100%;">
+            <tr>
+                <td align="left">
+                    <label>Sort by: </label>
+                    <select id="sel_id" name="sel_name"  onchange="myFunction(this.value);">
+                        <option value="-1">Select</option>
+                        <option value="1">Difficulty </option>
+                        <option value="2">Enjoyment </option>
+                        <option value="3">Time commitment </option>
+                        <option value="4">Professor </option>
+                    </select>
+                </td>
+                <td align="right">
+                </td>
+            </tr>
+        </table>
+
 <? $arr = array();
 foreach ($reviews as $review){
 

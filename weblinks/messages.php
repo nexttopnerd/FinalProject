@@ -1,4 +1,10 @@
 <?php
+/**
+ * Sends and stores messages in the database.
+ * User: anirud
+ * Date: 4/29/14
+ * Time: 6:33 PM
+ */
 @ob_start();
 session_start();
 require '../resources/database.php';
@@ -10,18 +16,12 @@ if (!empty($_POST)){
     $locationError = null;
 
     $content = $_POST["content"];
-    $subject = $_POST["subject"];
     $receiver = $_POST["receiver"];
 
     $valid = true;
 
     if (empty($content)){
         $contentError = 'Please add a message';
-        $valid = false;
-    }
-
-    if (empty($subject)){
-        $subjectError = 'Please specify a subject';
         $valid = false;
     }
 
@@ -63,7 +63,7 @@ if (!empty($_POST)){
             $receiver = $row['user_id'];
         }
 
-        header("Location: insertMessages.php?content=$content&receiver=$receiver&subject=$subject");
+        header("Location: insertMessages.php?content=$content&receiver=$receiver");
 
     }
 
@@ -147,16 +147,6 @@ if (!empty($_POST)){
                 <textarea style="width: 200px;" id ="receiver" placeholder="Name" name="receiver" type="content"  class="form-control" value="<?php echo !empty($receiver)?$receiver:'';?>"></textarea>
                 <?php if (!empty($receiverError)): ?>
                     <span class="help-inline"><?php echo $receiverError;?></span>
-                <?php endif; ?>
-            </div>
-        </div>
-
-        <div class="control-group <?php echo !empty($subjectError)?'error':'';?>">
-            <label class="control-label">Subject: </label>
-            <div class="controls">
-                <textarea style="width: 300px;" placeholder="Subject" id="subject" name="subject"  class="form-control" value="<?php echo !empty($subject)?$subject:'';?>"></textarea>
-                <?php if (!empty($subjectError)): ?>
-                    <span class="help-inline"><?php echo $subjectError;?></span>
                 <?php endif; ?>
             </div>
         </div>

@@ -24,68 +24,6 @@ session_start();
     <!-- Just for debugging purposes. Don't actually copy this line! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 
-    <script>
-        /**
-         * ajax function set up
-         */
-        $.ajaxSetup({
-            key: 'value'
-        });
-
-        /**
-         * ajax function to check if any error was encountered while executing any ajax function
-         */
-        $(function() {
-            $.ajaxSetup({
-                error: function(jqXHR, exception) {
-                    if (jqXHR.status === 0) {
-                        alert('Not connect.\n Verify Network.');
-                    } else if (jqXHR.status == 404) {
-                        alert('Requested page not found. [404]');
-                    } else if (jqXHR.status == 500) {
-                        alert('Internal Server Error [500].');
-                    } else if (exception === 'parsererror') {
-                        alert('Requested JSON parse failed.');
-                    } else if (exception === 'timeout') {
-                        alert('Time out error.');
-                    } else if (exception === 'abort') {
-                        alert('Ajax request aborted.');
-                    } else {
-                        alert('Uncaught Error.\n' + jqXHR.responseText);
-                    }
-                }
-            });
-        });
-
-
-        /**
-         * ajax function to insert course into the database asynchronously
-         *
-         * @param sid, student ID
-         * @param course, course ID
-         */
-        function joinMeetup(course)
-        {
-            var course_id = document.getElementById("course").value;
-            if (window.XMLHttpRequest)
-            {// code for IE7+, Firefox, Chrome, Opera, Safari
-                xmlhttp=new XMLHttpRequest();
-            }
-            else
-            {// code for IE6, IE5
-                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            course_id = "CS "+course_id;
-
-            xmlhttp.open("POST","addCourse.php?course="+course_id,false);
-            xmlhttp.send();
-
-            //loading the new set of comments after a new comment has been posted
-            //loadComments(assign, file);
-            window.location.reload();
-        }
-    </script>
-
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>-->
@@ -126,46 +64,33 @@ session_start();
 </div>
 
 <div class="container">
-    <?php
-    //provides the detailed information regarding the meet ups
-    require '../resources/database.php';
-    $cntid = $_GET["cntid"];
-
-    $pdo = Database::connect();
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "SELECT * FROM meetups WHERE id = '$cntid'";
-
-    foreach($pdo->query($sql) as $row){
-        echo '<h3>'.$row['content'].'</h3>';
-        echo '<p>By: '.$row['user'].'<p>';
-        echo '<p>Where: '.$row['mwhere'].'<p>';
-        echo '<p>When: '.$row['mwhen'].'<p>';
-        echo '<p>Till: '.$row['mtill'].'<p>';
-        echo"<br>";
-    }
-
-    Database::disconnect();
-
-    ?>
-    <p></p>
 
     <br>
-    <div>
+    <div id="scrl">
         <?php
-        //tells how many people have joined the current meetup
+        //checks whether the user has read the message or not
+        require '../resources/database.php';
+
         $joined = 0;
         $cntid = $_GET["cntid"];
+        $rid = $_GET["rid"];
         $pdo = Database::connect();
         $cid = $_SESSION["sid"];
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "SELECT * FROM messages WHERE id = '$cntid'";
+        $sql = "SELECT * FROM messages WHERE sender_id = '$cntid' AND receiver_id = '$rid' ORDER BY messages.timestamp DESC";
+
+        echo '<h3>Message Thread:</h3>';
 
         foreach($pdo->query($sql) as $row){
-            echo '<h3>'.$row['content'].'</h3>';
+
+            $spc = str_repeat('&nbsp;', 2);
+
+            echo '<hr>';
+            echo '<p>'.$spc.$row['content'].$spc.'-<i>'.$spc.$row['timestamp'].'</i></p>';
 
             $read = 1;
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $sql = "UPDATE messages SET readby=? WHERE id = ?";
+            $sql = "UPDATE messages SET readby=? WHERE sender_id = ?";
             $q = $pdo->prepare($sql);
             $q->execute(array($read, $cntid));
         }

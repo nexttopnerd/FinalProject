@@ -123,6 +123,28 @@ include_once ("reviewprocessing.php");
         echo "<dd>";
         echo $courses[$_GET['title']]->getDescription();
         echo "</dd>";
+        echo "<dt>Tutors</dt>";
+        echo "<dd>";
+        require '../resources/database.php';
+
+        $cid = $_GET['title'];
+        $sid = $_SESSION['sid'];
+
+        $tok = strtok($cid, " ");
+        $cid = strtok(" ");
+
+        $pdo = Database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "SELECT * FROM users, interests WHERE users.user_id = '$sid' AND tutorone = '$cid' OR users.user_id = '$sid' AND tutortwo = '$cid'";
+
+        foreach($pdo->query($sql) as $row){
+
+            echo $row['username'];
+            echo ", ";
+        }
+
+        Database::disconnect();
+        echo "</dd>";
         echo "</dl>";
         ?>
 

@@ -14,17 +14,14 @@ $pdo = Database::connect();
 $sid = $_SESSION["sid"];
 $content= $_GET["content"];
 $rid =  $_GET["receiver"];
-$subject =  $_GET["subject"];
 $readby = 0;
 
 $content = strip_tags($content, '<p><a>');
-$mwhen = strip_tags($receiver, '<p><a>');
-$mwhere = strip_tags($subject, '<p><a>');
 
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$sql = "INSERT INTO messages (sender_id, receiver_id, content, subject, readby) values(?, ?, ?, ?, ?)";
+$sql = "INSERT INTO messages (sender_id, receiver_id, content, readby) values(?, ?, ?, ?)";
 $q = $pdo->prepare($sql);
-$q->execute(array($sid, $rid, $content, $subject, $readby));
+$q->execute(array($sid, $rid, $content, $readby));
 
 Database::disconnect();
 
