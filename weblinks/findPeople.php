@@ -98,6 +98,31 @@ session_start();
 
         }
 
+        /**
+         * ajax function to find and sort people by their compatability with the user
+         *
+         */
+        function getStat()
+        {
+            if (window.XMLHttpRequest)
+                {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp=new XMLHttpRequest();
+                }
+            else
+                {// code for IE6, IE5
+                    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                }
+            xmlhttp.onreadystatechange=function()
+                {
+                    if (xmlhttp.status==200)
+                    {
+                        document.getElementById("sameInterests").innerHTML=xmlhttp.responseText;
+                    }
+                }
+            xmlhttp.open("GET","displayInterestStats.php?match=1",true);
+            xmlhttp.send();
+        }
+
 
     </script>
 
@@ -150,6 +175,7 @@ session_start();
     </table>
     <div id="sameInterests">
         <?php require ('displayCommonInterests.php');?>
+        <?php require ('displayInterestStats.php');?>
     </div>
     <form method="post" action="" onsubmit="findPeople(); return false;">
         <div class="form-group">
@@ -165,6 +191,7 @@ session_start();
         </div>
         <br>
         <input class="btn btn-primary btn-lg" name="find" type="submit" value="Find!" />
+        <input class="btn btn-primary btn-lg" name="match" type="submit" onclick="getStat(); return false;" value="Get Stat!" />
         <a class="btn btn-large" href="sameInterests.php">Back</a>
     </form>
 
