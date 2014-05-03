@@ -65,57 +65,40 @@ session_start();
 
 
         /**
-         * ajax function to remove course from the database
+         * ajax function to find people with same interests as the user
          *
          */
-        function dropCourse()
+        function findPeople()
         {
-            var course_id = document.getElementById("course").value;
-            if (window.XMLHttpRequest)
-            {// code for IE7+, Firefox, Chrome, Opera, Safari
-                xmlhttp=new XMLHttpRequest();
-            }
-            else
-            {// code for IE6, IE5
-                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            course_id = "CS "+course_id;
-
-            xmlhttp.open("POST","removeCourse.php?course="+course_id,false);
-            xmlhttp.send();
+            var course_id = document.getElementById("int").value;
 
             //loading the new set of comments after a new comment has been posted
-            //loadCourses();
-            window.location.reload();
-        }
-
-        /**
-         *Loads and displays all the courses the current user is taking asynchronousy
-         *
-         */
-        function loadCourses()
-        {
-
-            var xmlhttp;
-            var rr = 1;
-            if (window.XMLHttpRequest)
-            {// code for IE7+, Firefox, Chrome, Opera, Safari
-                xmlhttp=new XMLHttpRequest();
+            if(course_id == "-1"){
+                alert("Select a valid option");
             }
-            else
-            {// code for IE6, IE5
-                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange=function()
-            {
-                if (xmlhttp.status==200)
-                {
-                    document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+            else{
+                if (window.XMLHttpRequest)
+                {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp=new XMLHttpRequest();
                 }
+                else
+                {// code for IE6, IE5
+                    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange=function()
+                {
+                    if (xmlhttp.status==200)
+                    {
+                        document.getElementById("sameInterests").innerHTML=xmlhttp.responseText;
+                    }
+                }
+                xmlhttp.open("GET","displayCommonInterests.php?intr="+course_id,true);
+                xmlhttp.send();
             }
-            xmlhttp.open("POST","dropedCourses.php?reset="+rr,true);
-            xmlhttp.send();
+
         }
+
+
     </script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -161,27 +144,31 @@ session_start();
     <br>
     <table>
         <tr>
-            <td width="15%"><div class="glyphicon glyphicon-trash"></div></td>
-            <td><h4>Drop a course:<h4></td>
+            <td width="15%"><div class="glyphicon glyphicon-list-alt" style="font-size:20px;"></div></td>
+            <td><h4>Find people with same:<h4></td>
         </tr>
     </table>
-            <form method="post" action="" onsubmit="dropCourse(); return false;">
-                <div class="form-group">
-                    <br>
-                    <select name="course" id="course" value="course">
-                        <div id ="myDiv">
-                        <?php
-                        require('dropedCourses.php');
-                        ?>
-                        </div>
-                    </select>
-                </div>
-                <br>
-                <input class="btn btn-primary btn-lg" name="drop_course" type="submit" value="Drop Course" />
-                <a class="btn btn-large" href="sameCourses.php">Back</a>
-            </form>
+    <div id="sameInterests">
+        <?php require ('displayCommonInterests.php');?>
+    </div>
+    <form method="post" action="" onsubmit="findPeople(); return false;">
+        <div class="form-group">
+            <br>
+            <select name="course" id="int" value="course">
+                <option value="-1">Select</option>
+                <option value="csinterest">CS interest</option>
+                <option value="tutors">Tutors</option>
+                <option value="leisure">Leisure activity</option>
+                <option value="door">Indoor/Outdoor</option>
+                <option value="look">Looking for</option>
+            </select>
+        </div>
+        <br>
+        <input class="btn btn-primary btn-lg" name="find" type="submit" value="Find!" />
+        <a class="btn btn-large" href="sameInterests.php">Back</a>
+    </form>
 
-            <hr>
+    <hr>
     <footer>
         <p>&copy; Company 2014</p>
     </footer>

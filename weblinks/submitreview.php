@@ -186,7 +186,7 @@
 </div>
 
 <hr>
-<h4>
+
     <i><b>Exams</b></i>
     </h3>
     <div class="form-group <?echo $examsDiv?>">

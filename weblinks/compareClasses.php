@@ -5,7 +5,7 @@ include_once('../datastructures/course.php');
 include_once('../datastructures/review.php');
 
 if (!ini_get('display_errors')) {
-    ini_set('display_errors', '1');
+    ini_set('display_errors', '0');
 }
 
 $classes = array();
@@ -56,6 +56,7 @@ foreach($_POST['class'] as $value)
 
 
 }
+endif;
 
 endif;
 
@@ -147,14 +148,14 @@ endif;
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="#">About us</a></li>
                 <li><a href="courses.php">Courses</a></li>
                 <li><a href="meetups.php">Meetups</a></li>
                 <li><a href="connect.php">Connect</a></li>
-                <li><a href="compareClasses.php">Compare</a></li>
+                <li class="active"><a href="compareClasses.php">Compare</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li><a class="glyphicon glyphicon-comment" style="font-size:20px;" href="messages.php"></a></li>
                 <li><a href="#"> Hello <?php echo $_SESSION["username"];?>!</a></li>
             </ul>
         </div><!--/.nav-collapse -->
