@@ -1,23 +1,27 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Sonia
- * Date: 4/20/14
- * Time: 3:06 PM
- */
 ?>
 <form class="form-horizontal" role="form" action="coursedetails.php?title=<? echo $_GET['title']?>" method="post">
-
 <h4>Add a Review</h4>
 <hr>
 
-<div class="form-group <?echo $professorDiv?> ">
+<div class="form-group <?echo $professorDiv?> " autocomplete="off">
 
     <label class="col-sm-2 control-label" for = "professor">
         Professor name:
     </label>
     <div class="col-sm-10">
-        <input type="text" name="professor" id = "professor" class="form-control" value="<? echo $professor ?>">
+        <input name = "professor" list="professor" class="form-control" autocomplete="off" value="<? echo $professor?>">
+        <datalist id="professor">
+            <?
+                $professors = [];
+                foreach ($reviews as $review){
+                    if(!isset($professors[$review->getProfessor()])){
+                        $professors[$review->getProfessor()] = $review->getProfessor();
+                        echo '<option value="'.$review->getProfessor().'">';
+                    }
+                }
+            ?>
+        </datalist>
         <? echo $professorIcon ?>
     </div>
     <div class="col-sm-10 col-sm-offset-2 text-danger">
@@ -29,7 +33,18 @@
         TA:
     </label>
     <div class="col-sm-10">
-        <input type="text" name = "ta" id = "ta" class="form-control" value="<? echo $ta?>">
+        <input name = "ta" list="ta" class="form-control" autocomplete="off" value="<? echo $ta?>">
+        <datalist id="ta">
+        <?
+            $tas = [];
+            foreach ($reviews as $review){
+                if(!isset($tas[$review->getTa()])){
+                    $tas[$review->getTa()] = $review->getTa();
+                    echo '<option value="'.$review->getTa().'">';
+                }
+            }
+        ?>
+        </datalist>
         <? echo $taIcon ?>
     </div>
     <div class="col-sm-10 col-sm-offset-2 text-danger">
