@@ -122,13 +122,15 @@ session_start();
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="#">About us</a></li>
                 <li><a href="courses.php">Courses</a></li>
                 <li><a href="meetups.php">Meetups</a>
                 <li class="active"><a href="connect.php">Connect</a></li>
+                <li><a href="compareClasses.php">Compare</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li><a class="glyphicon glyphicon-comment" style="font-size:20px;" href="messages.php"></a></li>
+
                 <li><a href="#"> Hello <?php echo $_SESSION["username"];?>!</a></li>
             </ul>
         </div><!--/.nav-collapse -->

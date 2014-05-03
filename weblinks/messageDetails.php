@@ -1,13 +1,8 @@
 <?php
 @ob_start();
 session_start();
-/**
- * Created by PhpStorm.
- * User: soniamohanlal
- * Date: 4/17/14
- * Time: 2:44 PM
- */
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +17,6 @@ session_start();
 
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
-
 
     <!-- Custom styles for this template -->
     <link href="../css/jumbotron.css" rel="stylesheet">
@@ -65,10 +59,12 @@ session_start();
 
 
         /**
-         * ajax function to remove course from the database
+         * ajax function to insert course into the database asynchronously
          *
+         * @param sid, student ID
+         * @param course, course ID
          */
-        function dropCourse()
+        function joinMeetup(course)
         {
             var course_id = document.getElementById("course").value;
             if (window.XMLHttpRequest)
@@ -81,48 +77,20 @@ session_start();
             }
             course_id = "CS "+course_id;
 
-            xmlhttp.open("POST","removeCourse.php?course="+course_id,false);
+            xmlhttp.open("POST","addCourse.php?course="+course_id,false);
             xmlhttp.send();
 
             //loading the new set of comments after a new comment has been posted
-            //loadCourses();
+            //loadComments(assign, file);
             window.location.reload();
-        }
-
-        /**
-         *Loads and displays all the courses the current user is taking asynchronousy
-         *
-         */
-        function loadCourses()
-        {
-
-            var xmlhttp;
-            var rr = 1;
-            if (window.XMLHttpRequest)
-            {// code for IE7+, Firefox, Chrome, Opera, Safari
-                xmlhttp=new XMLHttpRequest();
-            }
-            else
-            {// code for IE6, IE5
-                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange=function()
-            {
-                if (xmlhttp.status==200)
-                {
-                    document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
-                }
-            }
-            xmlhttp.open("POST","dropedCourses.php?reset="+rr,true);
-            xmlhttp.send();
         }
     </script>
 
+
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
+    <!--[if lt IE 9]>-->
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-
 
     <![endif]-->
 </head>
@@ -144,12 +112,12 @@ session_start();
             <ul class="nav navbar-nav">
                 <li><a href="courses.php">Courses</a></li>
                 <li><a href="meetups.php">Meetups</a>
-                <li class="active"><a href="connect.php">Connect</a></li>
+                <li><a href="connect.php">Connect</a></li>
                 <li><a href="compareClasses.php">Compare</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a class="glyphicon glyphicon-comment" style="font-size:20px;" href="messages.php"></a></li>
+                <li class="active"><a class="glyphicon glyphicon-comment" style="font-size:20px;" href="messages.php"></a></li>
 
                 <li><a href="#"> Hello <?php echo $_SESSION["username"];?>!</a></li>
             </ul>
@@ -158,34 +126,58 @@ session_start();
 </div>
 
 <div class="container">
-    <br>
-    <table>
-        <tr>
-            <td width="15%"><div class="glyphicon glyphicon-trash"></div></td>
-            <td><h4>Drop a course:<h4></td>
-        </tr>
-    </table>
-            <form method="post" action="" onsubmit="dropCourse(); return false;">
-                <div class="form-group">
-                    <br>
-                    <select name="course" id="course" value="course">
-                        <div id ="myDiv">
-                        <?php
-                        require('dropedCourses.php');
-                        ?>
-                        </div>
-                    </select>
-                </div>
-                <br>
-                <input class="btn btn-primary btn-lg" name="drop_course" type="submit" value="Drop Course" />
-                <a class="btn btn-large" href="sameCourses.php">Back</a>
-            </form>
+    <?php
+    //provides the detailed information regarding the meet ups
+    require '../resources/database.php';
+    $cntid = $_GET["cntid"];
 
-            <hr>
+    $pdo = Database::connect();
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $sql = "SELECT * FROM meetups WHERE id = '$cntid'";
+
+    foreach($pdo->query($sql) as $row){
+        echo '<h3>'.$row['content'].'</h3>';
+        echo '<p>By: '.$row['user'].'<p>';
+        echo '<p>Where: '.$row['mwhere'].'<p>';
+        echo '<p>When: '.$row['mwhen'].'<p>';
+        echo '<p>Till: '.$row['mtill'].'<p>';
+        echo"<br>";
+    }
+
+    Database::disconnect();
+
+    ?>
+    <p></p>
+
+    <br>
+    <div>
+        <?php
+        //tells how many people have joined the current meetup
+        $joined = 0;
+        $cntid = $_GET["cntid"];
+        $pdo = Database::connect();
+        $cid = $_SESSION["sid"];
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "SELECT * FROM messages WHERE id = '$cntid'";
+
+        foreach($pdo->query($sql) as $row){
+            echo '<h3>'.$row['content'].'</h3>';
+
+            $read = 1;
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $sql = "UPDATE messages SET readby=? WHERE id = ?";
+            $q = $pdo->prepare($sql);
+            $q->execute(array($read, $cntid));
+        }
+
+        Database::disconnect();
+        ?>
+    </div>
+    <hr>
+
     <footer>
         <p>&copy; Company 2014</p>
     </footer>
-
 </div> <!-- /container -->
 
 
