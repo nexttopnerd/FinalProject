@@ -6,8 +6,40 @@
  * Time: 2:04 PM
  */
 session_start();
-?>
 
+include_once('../resources/database.php');
+
+$pdo = Database::connect();
+
+$count = 0;
+$avgdiff = 0;
+$avgtime = 0;
+$avgenj = 0;
+
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$sql = "SELECT * FROM reviews WHERE professor = ?";
+$q = $pdo->prepare($sql);
+$q->execute(array($_GET['name']));
+while($row = $q->fetch()){
+    echo '<dl class="dl-horizontal">';
+    echo '<dt>'.$row['user'].'</dt>';
+    echo '<dd>'.$row['professorcomments'].'</dd>';
+    echo '</dl>';
+
+    $avgdiff = $avgdiff+ $row['difficulty'];
+    $avgtime = $avgtime + $row['time'];
+    $avgenj = $avgenj + $row['enjoyment'];
+    $count = $count+1;;
+}
+Database::disconnect();
+
+if($count != 0){
+    $avgdiff = ($avgdiff/$count) % 10;
+    $avgtime = ($avgtime/$count) % 10;
+    $avgenj = ($avgenj/$count) % 10;
+}
+
+?>
 <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -36,6 +68,28 @@ session_start();
 
 
         <![endif]-->
+
+        <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+        <script type='text/javascript'>
+            google.load('visualization', '1', {packages:['table']});
+            google.setOnLoadCallback(drawTable);
+            function drawTable() {
+                var data = new google.visualization.DataTable();
+                data.addColumn('date', 'Date');
+                data.addColumn('string', 'Class');
+                data.addColumn('number', 'Rating');
+                data.addColumn('string', 'Comment');
+                data.addRows([
+                    ['Mike',  {v: 10000, f: '$10,000'}, true],
+                    ['Jim',   {v:8000,   f: '$8,000'},  false],
+                    ['Alice', {v: 12500, f: '$12,500'}, true],
+                    ['Bob',   {v: 7000,  f: '$7,000'},  true]
+                ]);
+
+                var table = new google.visualization.Table(document.getElementById('table_div'));
+                table.draw(data, {showRowNumber: true});
+            }
+        </script>
     </head>
 
     <body>
@@ -74,41 +128,7 @@ session_start();
         <h3>Reviews</h3>
         <hr>
 
-        <?php
 
-            include_once('../resources/database.php');
-
-            $pdo = Database::connect();
-
-            $count = 0;
-            $avgdiff = 0;
-            $avgtime = 0;
-            $avgenj = 0;
-
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $sql = "SELECT * FROM reviews WHERE professor = ?";
-            $q = $pdo->prepare($sql);
-            $q->execute(array($_GET['name']));
-            while($row = $q->fetch()){
-                echo '<dl class="dl-horizontal">';
-                echo '<dt>'.$row['user'].'</dt>';
-                echo '<dd>'.$row['professorcomments'].'</dd>';
-                echo '</dl>';
-
-                $avgdiff = $avgdiff+ $row['difficulty'];
-                $avgtime = $avgtime + $row['time'];
-                $avgenj = $avgenj + $row['enjoyment'];
-                $count = $count+1;;
-            }
-            Database::disconnect();
-
-        if($count != 0){
-        $avgdiff = ($avgdiff/$count) % 10;
-        $avgtime = ($avgtime/$count) % 10;
-        $avgenj = ($avgenj/$count) % 10;
-        }
-
-        ?>
         <hr>
         <div class="row">
             <div class="col-sm-2"><i class="glyphicon glyphicon-align-justify"></i> <?
