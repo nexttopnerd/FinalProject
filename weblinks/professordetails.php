@@ -6,9 +6,8 @@
  * Time: 2:04 PM
  */
 session_start();
-
+$professor = null;
 include_once('../resources/database.php');
-
 $pdo = Database::connect();
 
 $count = 0;
@@ -20,7 +19,23 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $sql = "SELECT * FROM reviews WHERE professor = ?";
 $q = $pdo->prepare($sql);
 $q->execute(array($_GET['name']));
-while($row = $q->fetch()){
+$professor = $q->fetchAll();
+Database::disconnect();
+
+foreach($professor as $row){
+    $avgdiff = $avgdiff+ $row['difficulty'];
+    $avgtime = $avgtime + $row['time'];
+    $avgenj = $avgenj + $row['enjoyment'];
+    $count = $count+1;;
+}
+
+if($count != 0){
+    $avgdiff = ($avgdiff/$count) % 10;
+    $avgtime = ($avgtime/$count) % 10;
+    $avgenj = ($avgenj/$count) % 10;
+}
+
+/*while($row = $q->fetch()){
     echo '<dl class="dl-horizontal">';
     echo '<dt>'.$row['user'].'</dt>';
     echo '<dd>'.$row['professorcomments'].'</dd>';
@@ -37,8 +52,8 @@ if($count != 0){
     $avgdiff = ($avgdiff/$count) % 10;
     $avgtime = ($avgtime/$count) % 10;
     $avgenj = ($avgenj/$count) % 10;
-}
-
+}*/
+//var_dump($professor);
 ?>
 <!DOCTYPE html>
     <html lang="en">
@@ -49,6 +64,8 @@ if($count != 0){
         <meta name="description" content="">
         <meta name="author" content="">
         <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
 
         <title>Port Illinois</title>
 
@@ -75,21 +92,61 @@ if($count != 0){
             google.setOnLoadCallback(drawTable);
             function drawTable() {
                 var data = new google.visualization.DataTable();
-                data.addColumn('date', 'Date');
+                var options = {'allowHtml': true};
+                data.addColumn('string', 'Date');
                 data.addColumn('string', 'Class');
-                data.addColumn('number', 'Rating');
+                data.addColumn('string', 'Rating');
                 data.addColumn('string', 'Comment');
                 data.addRows([
-                    ['Mike',  {v: 10000, f: '$10,000'}, true],
-                    ['Jim',   {v:8000,   f: '$8,000'},  false],
-                    ['Alice', {v: 12500, f: '$12,500'}, true],
-                    ['Bob',   {v: 7000,  f: '$7,000'},  true]
+                    <?
+                    for($i=0; $i<count($professor); $i++):
+                        $overallRating1 = ($professor[$i]['difficulty']+$professor[$i]['time']+$professor[$i]['enjoyment'])/3;
+                        $overallRating = str_repeat('<i class="glyphicon glyphicon-star" style="color:goldenrod; font-size: 15px;"></i>',round($overallRating1));
+                        $overallRating = $overallRating.str_repeat('<i class="glyphicon glyphicon-star-empty" style="color:goldenrod; font-size: 15px;"></i>', round(5-$overallRating1));
+                        /*if ($overallRating >= 3)
+                            $overallRating = '<i class="glyphicon glyphicon-thumbs-up" style="color:lime; font-size: 20px;"></i>';
+                        else
+                            $overallRating = '<i class="glyphicon glyphicon-thumbs-down" style="color:red"></i>';*/
+                        $difficulty = str_repeat('<i class="glyphicon glyphicon-warning-sign" style="color:darkgray"></i>',$professor[$i]['difficulty']);
+                        $difficulty = $difficulty.str_repeat('<i class="glyphicon glyphicon-warning-sign" style="color:white"></i>', 5-$professor[$i]['difficulty']);
+                        $time = str_repeat('<i class="glyphicon glyphicon-time" style="color:darkgray"></i>',$professor[$i]['time']);
+                        $time = $time.str_repeat('<i class="glyphicon glyphicon-time" style="color:white"></i>', 5-$professor[$i]['time']);
+                        $enjoyment = str_repeat('<i class="glyphicon glyphicon-thumbs-up" style="color:darkgray"></i>',$professor[$i]['enjoyment']);
+                        $enjoyment = $enjoyment.str_repeat('<i class="glyphicon glyphicon-thumbs-up" style="color:white"></i>', 5-$professor[$i]['enjoyment']);?>
+
+                        ['<? echo date('m/d/y', strtotime($professor[$i]['timestamp'])) ?>',
+                         '<? echo $professor[$i]['code']?>',
+                         '<dl class="dl-horizontal"><dt>Overall: </dt><dd><? echo $overallRating?></dd><hr><dt><small>Difficulty: </small></dt><dd><? echo $difficulty?></dd><hr><dt><small>Time: </small></dt><dd><?echo $time?></dd><hr><dt><small>Enjoyment: </small></dt><dd><?echo $enjoyment?></dd><hr></dl>',
+                         '<? echo $professor[$i]['professorcomments']?>']
+                         <? if($i!=(count($professor)-1)):
+                            echo ",";
+                         ?>
+                       <?
+                       endif;
+                    endfor;?>
                 ]);
 
+
                 var table = new google.visualization.Table(document.getElementById('table_div'));
-                table.draw(data, {showRowNumber: true});
+                table.draw(data,options);
             }
         </script>
+        <style>
+            .google-visualization-table-td, .google-visualization-table-th{
+                border: 0;
+                text-align: center;
+            }
+
+            .ratings td{
+                border-bottom: 1px solid grey;
+            }
+            .hrowclass, .trowclass, .otrowclass, .strowclass, .hcellclass, .tcellclass
+                {
+                background-color: transparent;
+                border: 1px solid #c8c8c8;
+            }
+
+        </style>
     </head>
 
     <body>
@@ -128,10 +185,11 @@ if($count != 0){
         <h3>Reviews</h3>
         <hr>
 
+        <div id="table_div"></div>
 
         <hr>
         <div class="row">
-            <div class="col-sm-2"><i class="glyphicon glyphicon-align-justify"></i> <?
+            <!--<div class="col-sm-2"><i class="glyphicon glyphicon-align-justify"></i> <?
                 echo "Summary"; ?></div>
             <div class="col-sm-10">
                 <table class="table text-center">
@@ -172,7 +230,7 @@ if($count != 0){
 
                 </table>
 
-            </div>
+            </div>-->
         </div>
 
     </div>

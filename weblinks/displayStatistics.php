@@ -137,7 +137,7 @@ foreach($reviews as $review){
 
 
 <h3 class="text-center">Grade Distributions</h3>
-<div id="chart_div">
+<div id="chart_div" class="col-sm-offset-2">
 </div>
 <h3 class="text-center">Quantitative Reviews</h3>
 <div id="chart_div2"></div>
