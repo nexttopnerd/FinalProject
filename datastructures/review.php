@@ -25,6 +25,24 @@ class Review{
     private $comments_on_course;
     private $user;
     private $id;
+    private $approvals = array();
+
+    /**
+     * @param mixed $approvals
+     */
+    public function setApprovals($approvals)
+    {
+        $this->approvals = $approvals;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApprovals()
+    {
+        return $this->approvals+1;
+    }
+
     /**
      * @param mixed $id
      */

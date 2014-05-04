@@ -14,6 +14,7 @@ $count = 0;
 $avgdiff = 0;
 $avgtime = 0;
 $avgenj = 0;
+$req = array(0, 0, 0, 0, 0);
 
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $sql = "SELECT * FROM reviews WHERE professor = ?";
@@ -23,6 +24,31 @@ $professor = $q->fetchAll();
 Database::disconnect();
 
 foreach($professor as $row){
+    switch($row['grade']):
+        case "A":
+        case "A-":
+        case "A+":
+            $req[0]++;
+            break;
+        case "B":
+        case "B-":
+        case "B+":
+            $req[1]++;
+            break;
+        case "C":
+        case "C-":
+        case "C+":
+            $req[2]++;
+            break;
+        case "D":
+        case "D-":
+        case "D+":
+            $req[3]++;
+            break;
+        default:
+            $req[4]++;
+            break;
+    endswitch;
     $avgdiff = $avgdiff+ $row['difficulty'];
     $avgtime = $avgtime + $row['time'];
     $avgenj = $avgenj + $row['enjoyment'];
@@ -35,25 +61,8 @@ if($count != 0){
     $avgenj = ($avgenj/$count) % 10;
 }
 
-/*while($row = $q->fetch()){
-    echo '<dl class="dl-horizontal">';
-    echo '<dt>'.$row['user'].'</dt>';
-    echo '<dd>'.$row['professorcomments'].'</dd>';
-    echo '</dl>';
+$totalQuality = ($avgdiff + $avgtime + $avgenj)/3;
 
-    $avgdiff = $avgdiff+ $row['difficulty'];
-    $avgtime = $avgtime + $row['time'];
-    $avgenj = $avgenj + $row['enjoyment'];
-    $count = $count+1;;
-}
-Database::disconnect();
-
-if($count != 0){
-    $avgdiff = ($avgdiff/$count) % 10;
-    $avgtime = ($avgtime/$count) % 10;
-    $avgenj = ($avgenj/$count) % 10;
-}*/
-//var_dump($professor);
 ?>
 <!DOCTYPE html>
     <html lang="en">
@@ -90,12 +99,13 @@ if($count != 0){
         <script type='text/javascript'>
             google.load('visualization', '1', {packages:['table']});
             google.setOnLoadCallback(drawTable);
+            google.setOnLoadCallback(drawChart3);
             function drawTable() {
                 var data = new google.visualization.DataTable();
                 var options = {'allowHtml': true};
                 data.addColumn('string', 'Date');
                 data.addColumn('string', 'Class');
-                data.addColumn('string', 'Rating');
+                data.addColumn('number', 'Rating');
                 data.addColumn('string', 'Comment');
                 data.addRows([
                     <?
@@ -103,10 +113,6 @@ if($count != 0){
                         $overallRating1 = ($professor[$i]['difficulty']+$professor[$i]['time']+$professor[$i]['enjoyment'])/3;
                         $overallRating = str_repeat('<i class="glyphicon glyphicon-star" style="color:goldenrod; font-size: 15px;"></i>',round($overallRating1));
                         $overallRating = $overallRating.str_repeat('<i class="glyphicon glyphicon-star-empty" style="color:goldenrod; font-size: 15px;"></i>', round(5-$overallRating1));
-                        /*if ($overallRating >= 3)
-                            $overallRating = '<i class="glyphicon glyphicon-thumbs-up" style="color:lime; font-size: 20px;"></i>';
-                        else
-                            $overallRating = '<i class="glyphicon glyphicon-thumbs-down" style="color:red"></i>';*/
                         $difficulty = str_repeat('<i class="glyphicon glyphicon-warning-sign" style="color:darkgray"></i>',$professor[$i]['difficulty']);
                         $difficulty = $difficulty.str_repeat('<i class="glyphicon glyphicon-warning-sign" style="color:white"></i>', 5-$professor[$i]['difficulty']);
                         $time = str_repeat('<i class="glyphicon glyphicon-time" style="color:darkgray"></i>',$professor[$i]['time']);
@@ -115,8 +121,8 @@ if($count != 0){
                         $enjoyment = $enjoyment.str_repeat('<i class="glyphicon glyphicon-thumbs-up" style="color:white"></i>', 5-$professor[$i]['enjoyment']);?>
 
                         ['<? echo date('m/d/y', strtotime($professor[$i]['timestamp'])) ?>',
-                         '<? echo $professor[$i]['code']?>',
-                         '<dl class="dl-horizontal"><dt>Overall: </dt><dd><? echo $overallRating?></dd><hr><dt><small>Difficulty: </small></dt><dd><? echo $difficulty?></dd><hr><dt><small>Time: </small></dt><dd><?echo $time?></dd><hr><dt><small>Enjoyment: </small></dt><dd><?echo $enjoyment?></dd><hr></dl>',
+                         '<? echo $professor[$i]['code']?>', {v: <?echo $overallRating1?>, f:
+                         '<dl class="dl-horizontal"><dt>Overall: </dt><dd><? echo $overallRating?></dd><hr><dt><small>Difficulty: </small></dt><dd><? echo $difficulty?></dd><hr><dt><small>Time: </small></dt><dd><?echo $time?></dd><hr><dt><small>Enjoyment: </small></dt><dd><?echo $enjoyment?></dd><hr><</dl>'},
                          '<? echo $professor[$i]['professorcomments']?>']
                          <? if($i!=(count($professor)-1)):
                             echo ",";
@@ -129,6 +135,27 @@ if($count != 0){
 
                 var table = new google.visualization.Table(document.getElementById('table_div'));
                 table.draw(data,options);
+            }
+
+            function drawChart3() {
+                var data = google.visualization.arrayToDataTable([
+                    ['Grade:', '%'],
+                    ['A',     <? echo $req[0]?>],
+                    ['B',      <?echo $req[1]?>],
+                    ['C',       <?echo $req[2]?>],
+                    ['D',       <?echo $req[3]?>],
+                    ['F or below', <?echo $req[4]?>]
+                ]);
+
+                var options = {
+                    width: '100%',
+                    height: 400,
+                    is3D: true
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+
+                chart.draw(data, options);
             }
         </script>
         <style>
@@ -180,16 +207,34 @@ if($count != 0){
     </div>
 
     <div class="container">
-        <h4 class="text-center"><? echo $_GET["name"] ?></h4>
+        <div class="row">
+        <br><br>
+        <div class="center-block text-center">
+        <i class="glyphicon glyphicon-user" style="font-size: 75px"></i>
+        <h4><? echo $_GET["name"] ?><br>
+            <small style="font-size: 14px"><? echo $count." ratings"; ?></small><br>
+            <? echo str_repeat('<i class="glyphicon glyphicon-star" style="color:goldenrod; font-size: 25px;"></i>',round($totalQuality));
+            echo  str_repeat('<i class="glyphicon glyphicon-star-empty" style="color:goldenrod; font-size: 25px;"></i>',5-round($totalQuality)); ?></h4>
+        </div>
+
+
+
+
+
+        </div>
         <hr>
         <h3>Reviews</h3>
         <hr>
 
+        <div class="row">
         <div id="table_div"></div>
+        </div>
 
         <hr>
+        <h3>Statistics</h3>
+        <hr>
         <div class="row">
-            <!--<div class="col-sm-2"><i class="glyphicon glyphicon-align-justify"></i> <?
+            <div class="col-sm-2"><i class="glyphicon glyphicon-align-justify"></i> <?
                 echo "Summary"; ?></div>
             <div class="col-sm-10">
                 <table class="table text-center">
@@ -230,9 +275,14 @@ if($count != 0){
 
                 </table>
 
-            </div>-->
+            </div>
         </div>
-
+        <div class="row">
+            <div class="col-sm-2"><i class="glyphicon glyphicon-align-justify"></i> <?
+                echo "Grade Distribution"; ?></div>
+            <div class="col-sm-10">
+                <div id="piechart_3d"></div>
+            </div>
     </div>
     </body>
 </html>

@@ -88,7 +88,9 @@ function compare($val, $rev_one, $rev_two){
 }
 $tid = $_GET['title'];
 $courses[$_GET['title']]->setReviews();
-$reviews = $courses[$_GET['title']]->getReviews();?>
+$reviews = $courses[$_GET['title']]->getReviews();
+echo str_replace("##num##", count($reviews), ob_get_clean());
+?>
 
         <script>
             function myFunction(val)

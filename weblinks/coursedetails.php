@@ -1,12 +1,14 @@
 <?php
 @ob_start();
+ob_start();
+ob_start();
 session_start();
 
-/*if (!ini_get('display_errors')) {
+if (!ini_get('display_errors')) {
     ini_set('display_errors', '1');
 }
 
-echo ini_get('display_errors');*/
+error_reporting(E_ALL);
 
 include_once ("reviewprocessing.php");
 ?>
@@ -24,6 +26,7 @@ include_once ("reviewprocessing.php");
 
         <!-- Bootstrap core CSS -->
         <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="http://getbootstrap.com/assets/css/docs.min.css" rel="stylesheet">
 
         <!-- Custom styles for this template -->
         <link href="../css/jumbotron.css" rel="stylesheet">
@@ -107,14 +110,20 @@ include_once ("reviewprocessing.php");
 
         include_once("../datastructures/course.php");
 
-        echo "<h3 class='text-center'>".$_GET['title']."</h3>";
         $courses = $_SESSION['view'];
-        $courses = unserialize($courses);
-        echo "<font size='4' face='Arial'>";
-         echo '<dl class="dl-horizontal">';
+        $courses = unserialize($courses);?>
+        <div class="row"><?
 
-        echo "<dt>Title</dt>";
-        echo "<dd>".$courses[$_GET['title']]->getTitle()."</dd>";
+        echo "<h3><span class='text-primary center-block text-center'>".$_GET['title'].": "."<small>".$courses[$_GET['title']]->getTitle()."</small></span>";?>
+        <span class="pull-right center-block text-center">
+            ##test##
+            <small class="center-block text-center">##num## Ratings</small>
+            <div class="text-primary text-center" style="font-size: 60px;">##grade##</div>
+            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal" id = "tutors">Find Tutors</button>
+        </span></h3>
+        <?
+        echo "<font size='4' face='Arial'>";
+        echo '<dl class="dl-horizontal">';
         echo "<dt>Credit</dt>";
         echo "<dd>";
         echo $courses[$_GET['title']]->getCredit();
@@ -123,30 +132,58 @@ include_once ("reviewprocessing.php");
         echo "<dd>";
         echo $courses[$_GET['title']]->getDescription();
         echo "</dd>";
-        echo "<dt>Tutors</dt>";
+        echo "<dt>Semesters Offered</dt>";
+        $courses[$_GET['title']]->setSemesters();
         echo "<dd>";
-        require '../resources/database.php';
-
-        $cid = $_GET['title'];
-        $sid = $_SESSION['sid'];
-
-        $tok = strtok($cid, " ");
-        $cid = strtok(" ");
-
-        $pdo = Database::connect();
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "SELECT * FROM users, interests WHERE users.user_id = interests.user_id AND tutorone = '$cid' OR users.user_id = interests.user_id AND tutortwo = '$cid'";
-
-        foreach($pdo->query($sql) as $row){
-
-            echo $row['username'];
-            echo ", ";
+        $sems = $courses[$_GET['title']]->getSemesters();
+        $lastSem = end($sems);
+        foreach($sems as $semester){
+            echo $semester;
+            if($semester!=$lastSem)
+                echo ",\n";
         }
-
-        Database::disconnect();
         echo "</dd>";
         echo "</dl>";
-        ?>
+        echo "</div>";
+     //   echo "<dt>Tutors</dt>";?>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">List of Awesome Tutors</h4>
+                    </div>
+                    <div class="modal-body">
+                        <?
+                        require '../resources/database.php';
+
+                        $cid = $_GET['title'];
+                        $sid = $_SESSION['sid'];
+
+                        $tok = strtok($cid, " ");
+                        $cid = strtok(" ");
+
+                        $pdo = Database::connect();
+                        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                        $sql = "SELECT * FROM users, interests WHERE users.user_id = interests.user_id AND tutorone = '$cid' OR users.user_id = interests.user_id AND tutortwo = '$cid'";
+
+                        foreach($pdo->query($sql) as $row){
+
+                            echo $row['username'];
+                            echo "<br>";
+                        }
+
+                        Database::disconnect();?>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
 
         <hr>
         <table style="width: 100%;">
@@ -186,7 +223,8 @@ include_once ("reviewprocessing.php");
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
+    <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
+    <script type="text/javascript" src="http://twitter-bootstrap/twitter-bootstrap-v2/docs/assets/js/bootstrap-collapse.js"></script>
+    <script src="../js/bootstrap.js"></script>
     </body>
     </html>

@@ -56,9 +56,6 @@
         Semester
     </label>
     <div class="col-sm-10">
-        <?
-        $courses[$_GET['title']]->setSemesters();
-        ?>
         <select class="form-control" name="semester" id="semester">
             <option value="0">Select option...</option>
             <?
@@ -83,9 +80,19 @@
         <select class="form-control" name="grade" id="grade">
             <option value="0">Select option...</option>
             <option value="A">A+/A</option>
-            <option value="B">B+/B/B-</option>
-            <option value="C">C+/C/C-</option>
-            <option value="D">D or below</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B">B</option>
+            <option value="B-">B-</option>
+            <option value="C+">C+</option>
+            <option value="C">C</option>
+            <option value="C-">C-</option>
+            <option value="D+">D+</option>
+            <option value="D">D</option>
+            <option value="D-">D-</option>
+            <option value="F">F</option>
+            <option value="CR">Pass/Fail</option>
+            <option value="NC">Non-credit</option>
         </select>
         <? echo $gradeIcon ?>
     </div>
