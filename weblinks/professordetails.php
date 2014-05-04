@@ -99,6 +99,7 @@ $totalQuality = ($avgdiff + $avgtime + $avgenj)/3;
         <script type='text/javascript'>
             google.load('visualization', '1', {packages:['table']});
             google.setOnLoadCallback(drawTable);
+            google.load("visualization", "1", {packages:["corechart"]});
             google.setOnLoadCallback(drawChart3);
             function drawTable() {
                 var data = new google.visualization.DataTable();
@@ -139,7 +140,7 @@ $totalQuality = ($avgdiff + $avgtime + $avgenj)/3;
 
             function drawChart3() {
                 var data = google.visualization.arrayToDataTable([
-                    ['Grade:', '%'],
+                    ['Grade:', 'percentage'],
                     ['A',     <? echo $req[0]?>],
                     ['B',      <?echo $req[1]?>],
                     ['C',       <?echo $req[2]?>],
@@ -283,7 +284,8 @@ $totalQuality = ($avgdiff + $avgtime + $avgenj)/3;
             <div class="col-sm-10">
                 <div id="piechart_3d"></div>
             </div>
-    </div>
+        </div>
+      </div>
     </body>
 </html>
 
